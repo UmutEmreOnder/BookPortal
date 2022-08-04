@@ -1,6 +1,6 @@
 package tr.com.obss.jip.service;
 
-import tr.com.obss.jip.dto.CreateNewUserRequest;
+import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.model.User;
 
@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserService {
     List<UserDto> getAllUsers();
 
-    void createNewUser(CreateNewUserRequest createNewUserRequest);
+    void createNewUser(CreateNewUser createNewUserRequest);
 
     UserDto findByName(String name);
 

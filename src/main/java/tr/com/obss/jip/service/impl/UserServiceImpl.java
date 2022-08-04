@@ -4,13 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tr.com.obss.jip.dto.CreateNewUserRequest;
+import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.exception.UserAlreadyExistException;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.UserMapper;
+import tr.com.obss.jip.model.Role;
+import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.UserRepository;
+import tr.com.obss.jip.service.RoleService;
 import tr.com.obss.jip.service.UserService;
 
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
 
     public List<UserDto> getAllUsers() {
@@ -39,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createNewUser(CreateNewUserRequest createNewUserRequest) {
+    public void createNewUser(CreateNewUser createNewUserRequest) {
         final Optional<User> existUser = userRepository.findUserByUsername(createNewUserRequest.getUsername());
 
         if (existUser.isPresent()) {
@@ -48,6 +52,9 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.mapTo(createNewUserRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        final Role standardRole = roleService.findByName(RoleType.ROLE_USER);
+        user.setRoles(List.of(standardRole));
 
         userRepository.save(user);
     }

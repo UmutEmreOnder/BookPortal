@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.obss.jip.dto.BookDto;
-import tr.com.obss.jip.dto.CreateNewBookRequest;
+import tr.com.obss.jip.dto.create.CreateNewAuthor;
+import tr.com.obss.jip.dto.create.CreateNewBook;
 import tr.com.obss.jip.dto.UserDto;
+import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.UserService;
 
@@ -24,6 +26,7 @@ import java.util.List;
 public class AdminController {
     private final UserService userService;
     private final BookService bookService;
+    private final AuthorService authorService;
 
     // User Part
     @GetMapping("/user/all")
@@ -42,6 +45,14 @@ public class AdminController {
         return Boolean.TRUE;
     }
 
+    // Author Part
+
+    @PostMapping("/author/create")
+    public Boolean createNewAuthor(@RequestBody @Valid CreateNewAuthor createNewAuthor) {
+        authorService.createNewAuthor(createNewAuthor);
+        return Boolean.TRUE;
+    }
+
 
     // Book Part
     @GetMapping("/book/all")
@@ -55,7 +66,7 @@ public class AdminController {
     }
 
     @PostMapping("/book/create")
-    public Boolean createNewBook(@RequestBody @Valid CreateNewBookRequest createNewBookRequest) {
+    public Boolean createNewBook(@RequestBody @Valid CreateNewBook createNewBookRequest) {
         bookService.createNewBook(createNewBookRequest);
         return true;
     }

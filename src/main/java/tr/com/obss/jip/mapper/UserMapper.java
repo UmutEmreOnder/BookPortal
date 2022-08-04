@@ -1,7 +1,7 @@
 package tr.com.obss.jip.mapper;
 
 import org.mapstruct.Mapper;
-import tr.com.obss.jip.dto.CreateNewUserRequest;
+import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.model.User;
 
@@ -12,5 +12,5 @@ public interface UserMapper {
 
     User mapTo(UserDto userDto);
 
-    User mapTo(CreateNewUserRequest createNewUserRequest);
+    User mapTo(CreateNewUser createNewUserRequest);
 }

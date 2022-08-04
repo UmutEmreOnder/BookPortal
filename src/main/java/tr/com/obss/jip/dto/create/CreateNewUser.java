@@ -1,4 +1,4 @@
-package tr.com.obss.jip.dto;
+package tr.com.obss.jip.dto.create;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class CreateNewUserRequest {
+public class CreateNewUser {
 
     @NotNBE
     @Length(min = 3, max = 20)

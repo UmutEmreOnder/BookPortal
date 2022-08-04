@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.BookDto;
-import tr.com.obss.jip.dto.CreateNewBookRequest;
+import tr.com.obss.jip.dto.create.CreateNewBook;
 import tr.com.obss.jip.exception.BookAlreadyExistException;
 import tr.com.obss.jip.exception.BookNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void createNewBook(CreateNewBookRequest createNewBookRequest) {
+    public void createNewBook(CreateNewBook createNewBookRequest) {
         final Optional<Book> existBook = bookRepository.findBookByName(createNewBookRequest.getName());
 
         if (existBook.isPresent()) {

@@ -31,7 +31,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class AuthorServiceImpl implements AuthorService {
-    private final RequestService requestService;
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
     private final PasswordEncoder passwordEncoder;
@@ -43,9 +42,8 @@ public class AuthorServiceImpl implements AuthorService {
         Author author = getAuthenticatedAuthor();
 
         createNewRequest.setAuthor(author);
-        requestService.createRequest(createNewRequest);
-
         author.getRequests().add(requestMapper.mapTo(createNewRequest));
+
         authorRepository.save(author);
     }
 
@@ -69,6 +67,16 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author findAuthorByUsername(String username) {
         return authorRepository.findAuthorByUsername(username).orElseThrow(AuthorNotFoundException::new);
+    }
+
+    @Override
+    public Author findAuthorById(Long id) {
+        return authorRepository.findById(id).orElseThrow(AuthorNotFoundException::new);
+    }
+
+    @Override
+    public void save(Author author) {
+        authorRepository.save(author);
     }
 
     private Author getAuthenticatedAuthor() {

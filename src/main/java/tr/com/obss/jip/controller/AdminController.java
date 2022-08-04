@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.obss.jip.dto.BookDto;
+import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.create.CreateNewAuthor;
 import tr.com.obss.jip.dto.create.CreateNewBook;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.mapper.UserMapper;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
+import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.UserService;
 
 import javax.validation.Valid;
@@ -28,6 +30,7 @@ public class AdminController {
     private final UserService userService;
     private final BookService bookService;
     private final AuthorService authorService;
+    private final RequestService requestService;
     private final UserMapper userMapper;
 
     // User Part
@@ -55,6 +58,18 @@ public class AdminController {
 
         // Authentication icin ilginc bi cozum ama ise yariyo
         userService.createNewAuthor(userMapper.mapTo(createNewAuthor));
+        return Boolean.TRUE;
+    }
+
+    // Request Part
+    @GetMapping("/request/all")
+    public List<RequestDto> getAllRequest() {
+        return requestService.getAllRequests();
+    }
+
+    @PostMapping("/request/accept")
+    public Boolean acceptRequest(@RequestParam("id") Long id) {
+        requestService.acceptRequest(id);
         return Boolean.TRUE;
     }
 

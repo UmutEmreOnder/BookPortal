@@ -1,5 +1,10 @@
 package tr.com.obss.jip.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import tr.com.obss.jip.annotations.NotNBE;
 import tr.com.obss.jip.model.Author;
 
@@ -9,6 +14,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RequestDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +32,5 @@ public class RequestDto {
     private String bookIsbn;
 
     @OneToOne
-    private Author author;
+    private AuthorDto author;
 }

@@ -8,4 +8,8 @@ public interface AuthorService {
     void addNewRequest(CreateNewRequest createNewRequest);
     void createNewAuthor(CreateNewAuthor createNewAuthor);
     Author findAuthorByUsername(String username);
+
+    Author findAuthorById(Long id);
+
+    void save(Author author);
 }

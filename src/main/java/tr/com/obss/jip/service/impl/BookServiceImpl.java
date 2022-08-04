@@ -10,7 +10,6 @@ import tr.com.obss.jip.exception.BookNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Book;
-import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BookRepository;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;

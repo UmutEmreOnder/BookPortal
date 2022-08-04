@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
-import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.UserService;
 

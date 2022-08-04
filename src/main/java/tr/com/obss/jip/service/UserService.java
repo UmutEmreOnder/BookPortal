@@ -1,8 +1,8 @@
 package tr.com.obss.jip.service;
 
 import tr.com.obss.jip.dto.BookDto;
-import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.dto.UserDto;
+import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.model.User;
 
 import java.util.List;

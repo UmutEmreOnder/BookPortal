@@ -59,11 +59,10 @@ public class RequestServiceImpl implements RequestService {
         bookService.createNewBook(createNewBook);
 
         Author author = request.getAuthor();
-
         author.getBooks().add(bookMapper.mapTo(bookService.findByName(request.getBookName())));
-
+        author.getRequests().remove(request);
         authorService.save(author);
 
-        // requestRepository.delete(request);
+        requestRepository.delete(request);
     }
 }

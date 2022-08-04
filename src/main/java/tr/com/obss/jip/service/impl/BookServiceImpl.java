@@ -8,7 +8,9 @@ import tr.com.obss.jip.dto.create.CreateNewBook;
 import tr.com.obss.jip.exception.BookAlreadyExistException;
 import tr.com.obss.jip.exception.BookNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
+import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Book;
+import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BookRepository;
 import tr.com.obss.jip.service.BookService;
 
@@ -22,6 +24,7 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final AuthorRepository authorRepository;
 
     @Override
     public List<BookDto> getAllBooks() {
@@ -58,6 +61,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook(Long id) {
-        bookRepository.delete(bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id)));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
+
+        Iterable<Author> authors = authorRepository.findAll();
+        for (Author author : authors) {
+            author.getBooks().remove(book);
+        }
+
+        bookRepository.delete(book);
     }
 }

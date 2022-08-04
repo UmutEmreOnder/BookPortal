@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
+import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.UserService;
 
@@ -65,4 +66,15 @@ public class UserController {
         userService.deleteFavoriteBook(name);
         return Boolean.TRUE;
     }
+
+    @GetMapping("/book/read/all")
+    public List<BookDto> getReadBooks() {
+        return userService.getReadBooks();
+    }
+
+    @GetMapping("/book/favorite/all")
+    public List<BookDto> getFavoriteBooks() {
+        return userService.getFavoriteBooks();
+    }
+
 }

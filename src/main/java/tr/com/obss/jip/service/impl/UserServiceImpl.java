@@ -7,11 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.exception.BookNotFoundException;
 import tr.com.obss.jip.exception.UserAlreadyExistException;
 import tr.com.obss.jip.exception.UserNotFoundException;
+import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.UserMapper;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Role;
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
     private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
 
     public List<UserDto> getAllUsers() {
@@ -144,6 +147,18 @@ public class UserServiceImpl implements UserService {
         user.setRoles(List.of(standardRole));
 
         userRepository.save(user);
+    }
+
+    @Override
+    public List<BookDto> getFavoriteBooks() {
+        User user = getAuthenticatedUser();
+        return user.getFavoriteList().stream().map(bookMapper::mapTo).toList();
+    }
+
+    @Override
+    public List<BookDto> getReadBooks() {
+        User user = getAuthenticatedUser();
+        return user.getReadList().stream().map(bookMapper::mapTo).toList();
     }
 
     private User getAuthenticatedUser() {

@@ -65,4 +65,15 @@ public class RequestServiceImpl implements RequestService {
 
         requestRepository.delete(request);
     }
+
+    @Override
+    public void denyRequest(Long id) {
+        Request request = requestRepository.findById(id).orElseThrow(() -> new RequestNotFoundException(id));
+
+        Author author = request.getAuthor();
+        author.getRequests().remove(request);
+        authorService.save(author);
+
+        requestRepository.delete(request);
+    }
 }

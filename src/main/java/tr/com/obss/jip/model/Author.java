@@ -49,4 +49,7 @@ public class Author {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> books;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<Request> requests;
 }

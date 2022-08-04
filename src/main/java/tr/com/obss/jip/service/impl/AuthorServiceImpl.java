@@ -2,13 +2,19 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.create.CreateNewAuthor;
 import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.exception.AuthorAlreadyExistException;
+import tr.com.obss.jip.exception.AuthorNotFoundException;
+import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.AuthorMapper;
 import tr.com.obss.jip.model.Author;
+import tr.com.obss.jip.model.Request;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.model.User;
@@ -32,6 +38,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest) {
+        Author author = getAuthenticatedAuthor();
+
+        createNewRequest.setAuthorId(author.getId());
         requestService.createRequest(createNewRequest);
     }
 
@@ -50,5 +59,21 @@ public class AuthorServiceImpl implements AuthorService {
         author.setRoles(List.of(standardRole));
 
         authorRepository.save(author);
+    }
+
+    @Override
+    public Author findAuthorByUsername(String username) {
+        return authorRepository.findAuthorByUsername(username).orElseThrow(AuthorNotFoundException::new);
+    }
+
+    private Author getAuthenticatedAuthor() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            return authorRepository.findAuthorByUsername(currentUserName).orElseThrow(AuthorNotFoundException::new);
+        }
+
+        return null;
     }
 }

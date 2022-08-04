@@ -129,6 +129,23 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public void createNewAuthor(CreateNewUser createNewUserRequest) {
+        final Optional<User> existUser = userRepository.findUserByUsername(createNewUserRequest.getUsername());
+
+        if (existUser.isPresent()) {
+            throw new UserAlreadyExistException(createNewUserRequest.getUsername());
+        }
+
+        User user = userMapper.mapTo(createNewUserRequest);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        final Role standardRole = roleService.findByName(RoleType.ROLE_AUTHOR);
+        user.setRoles(List.of(standardRole));
+
+        userRepository.save(user);
+    }
+
     private User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

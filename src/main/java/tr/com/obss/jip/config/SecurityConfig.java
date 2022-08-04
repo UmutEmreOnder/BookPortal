@@ -1,6 +1,7 @@
 package tr.com.obss.jip.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,14 +13,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import tr.com.obss.jip.dto.MyUserDetails;
 import tr.com.obss.jip.model.User;
+import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.UserService;
 
 import java.util.List;
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final UserService userService;
+    private final AuthorService authorService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, DaoAuthenticationProvider daoAuthenticationProvider) throws Exception {
@@ -39,7 +43,7 @@ public class SecurityConfig {
                 .antMatchers("/api/admin/**")
                 .hasRole("ADMIN")
                 .antMatchers("/api/author/**")
-                .permitAll() //.hasRole("AUTHOR")
+                .hasRole("AUTHOR")
                 .anyRequest()
                 .denyAll()
                 .and()

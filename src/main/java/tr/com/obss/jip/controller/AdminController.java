@@ -12,6 +12,7 @@ import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewAuthor;
 import tr.com.obss.jip.dto.create.CreateNewBook;
 import tr.com.obss.jip.dto.UserDto;
+import tr.com.obss.jip.mapper.UserMapper;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.UserService;
@@ -27,6 +28,7 @@ public class AdminController {
     private final UserService userService;
     private final BookService bookService;
     private final AuthorService authorService;
+    private final UserMapper userMapper;
 
     // User Part
     @GetMapping("/user/all")
@@ -50,6 +52,9 @@ public class AdminController {
     @PostMapping("/author/create")
     public Boolean createNewAuthor(@RequestBody @Valid CreateNewAuthor createNewAuthor) {
         authorService.createNewAuthor(createNewAuthor);
+
+        // Authentication icin ilginc bi cozum ama ise yariyo
+        userService.createNewAuthor(userMapper.mapTo(createNewAuthor));
         return Boolean.TRUE;
     }
 

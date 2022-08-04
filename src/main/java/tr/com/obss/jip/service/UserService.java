@@ -29,4 +29,6 @@ public interface UserService {
     void deleteReadBook(String name);
 
     void deleteFavoriteBook(String name);
+
+    void createNewAuthor(CreateNewUser mapTo);
 }

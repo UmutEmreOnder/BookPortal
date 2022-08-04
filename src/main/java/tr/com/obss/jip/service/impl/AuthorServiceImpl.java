@@ -13,6 +13,7 @@ import tr.com.obss.jip.exception.AuthorAlreadyExistException;
 import tr.com.obss.jip.exception.AuthorNotFoundException;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.AuthorMapper;
+import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Request;
 import tr.com.obss.jip.model.Role;
@@ -35,13 +36,17 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorMapper authorMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
+    private final RequestMapper requestMapper;
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest) {
         Author author = getAuthenticatedAuthor();
 
-        createNewRequest.setAuthorId(author.getId());
+        createNewRequest.setAuthor(author);
         requestService.createRequest(createNewRequest);
+
+        author.getRequests().add(requestMapper.mapTo(createNewRequest));
+        authorRepository.save(author);
     }
 
     @Override

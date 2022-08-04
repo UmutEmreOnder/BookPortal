@@ -71,4 +71,10 @@ public class AdminController {
         return true;
     }
 
+    @PostMapping("/book/delete")
+    public Boolean deleteBook(@RequestParam("id") Long id) {
+        bookService.deleteBook(id);
+        return Boolean.TRUE;
+    }
+
 }

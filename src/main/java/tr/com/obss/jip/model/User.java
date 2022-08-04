@@ -8,12 +8,15 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import tr.com.obss.jip.annotations.NotNBE;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -51,4 +54,11 @@ public class User {
 
     @ManyToMany
     private List<Role> roles;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<Book> readList;
+
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<Book> favoriteList;
 }

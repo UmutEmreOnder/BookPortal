@@ -7,12 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import tr.com.obss.jip.annotations.NotNBE;
+import tr.com.obss.jip.model.Book;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,4 +42,10 @@ public class UserDto {
 
     @NotNBE
     private String username;
+
+    @OneToMany
+    private List<Book> readList;
+
+    @OneToMany
+    private List<Book> favoriteList;
 }

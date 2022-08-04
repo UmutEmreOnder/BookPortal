@@ -38,6 +38,8 @@ public class SecurityConfig {
                 .hasRole("USER")
                 .antMatchers("/api/admin/**")
                 .hasRole("ADMIN")
+                .antMatchers("/api/author/**")
+                .permitAll() //.hasRole("AUTHOR")
                 .anyRequest()
                 .denyAll()
                 .and()

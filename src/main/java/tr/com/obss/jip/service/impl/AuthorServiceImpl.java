@@ -7,12 +7,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tr.com.obss.jip.dto.BookDto;
+import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.create.CreateNewAuthor;
 import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.exception.AuthorAlreadyExistException;
 import tr.com.obss.jip.exception.AuthorNotFoundException;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.AuthorMapper;
+import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Request;
@@ -36,6 +39,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
     private final RequestMapper requestMapper;
+    private final BookMapper bookMapper;
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest) {
@@ -87,6 +91,16 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteById(Long id) {
         authorRepository.deleteById(id);
+    }
+
+    @Override
+    public List<RequestDto> getAllRequests() {
+        return getAuthenticatedAuthor().getRequests().stream().map(requestMapper::mapTo).toList();
+    }
+
+    @Override
+    public List<BookDto> getAllBooks() {
+        return getAuthenticatedAuthor().getBooks().stream().map(bookMapper::mapTo).toList();
     }
 
     private Author getAuthenticatedAuthor() {

@@ -28,6 +28,4 @@ public class AuthorDto {
 
     @NotNBE
     private String surname;
-
-    private List<Book> books;
 }

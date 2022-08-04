@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.RequestDto;
+import tr.com.obss.jip.dto.RespondedRequestDto;
 import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.service.AuthorService;
 
@@ -37,5 +38,10 @@ public class AuthorController {
     @GetMapping("/get/current-requests")
     public List<RequestDto> getAllRequests() {
         return authorService.getAllRequests();
+    }
+
+    @GetMapping("/get/responded-requests")
+    public List<RespondedRequestDto> getAllRespondedRequests() {
+        return authorService.getAllRespondedRequests();
     }
 }

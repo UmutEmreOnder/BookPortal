@@ -25,9 +25,6 @@ public class RespondedRequestDto {
     @NotNBE
     private String bookIsbn;
 
-    @OneToOne
-    private Author author;
-
     @Enumerated(EnumType.STRING)
     @NotNBE
     private RespondType respond;

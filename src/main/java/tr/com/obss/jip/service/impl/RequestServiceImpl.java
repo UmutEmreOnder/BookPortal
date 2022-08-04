@@ -11,14 +11,15 @@ import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Request;
+import tr.com.obss.jip.model.RespondType;
 import tr.com.obss.jip.repository.RequestRepository;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RequestService;
+import tr.com.obss.jip.service.RespondedRequestService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -29,6 +30,7 @@ public class RequestServiceImpl implements RequestService {
     private final AuthorService authorService;
     private final BookService bookService;
     private final BookMapper bookMapper;
+    private final RespondedRequestService respondedRequestService;
 
 
     @Override
@@ -64,6 +66,8 @@ public class RequestServiceImpl implements RequestService {
         authorService.save(author);
 
         requestRepository.delete(request);
+
+        respondedRequestService.create(request, author, RespondType.ACCEPTED);
     }
 
     @Override
@@ -75,5 +79,7 @@ public class RequestServiceImpl implements RequestService {
         authorService.save(author);
 
         requestRepository.delete(request);
+
+        respondedRequestService.create(request, author, RespondType.DENIED);
     }
 }

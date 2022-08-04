@@ -79,6 +79,16 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.save(author);
     }
 
+    @Override
+    public Iterable<Author> findAll() {
+        return authorRepository.findAll();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        authorRepository.deleteById(id);
+    }
+
     private Author getAuthenticatedAuthor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

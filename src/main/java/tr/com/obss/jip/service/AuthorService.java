@@ -12,4 +12,8 @@ public interface AuthorService {
     Author findAuthorById(Long id);
 
     void save(Author author);
+
+    Iterable<Author> findAll();
+
+    void deleteById(Long id);
 }

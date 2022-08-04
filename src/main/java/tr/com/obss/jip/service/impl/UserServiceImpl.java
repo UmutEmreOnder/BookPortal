@@ -21,6 +21,8 @@ import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.BookRepository;
 import tr.com.obss.jip.repository.UserRepository;
+import tr.com.obss.jip.service.AuthorService;
+import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RoleService;
 import tr.com.obss.jip.service.UserService;
 
@@ -39,8 +41,9 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
-    private final BookRepository bookRepository;
+    private final BookService bookService;
     private final BookMapper bookMapper;
+    private final AuthorService authorService;
 
 
     public List<UserDto> getAllUsers() {
@@ -93,6 +96,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        if (user.getRoles().contains(roleService.findByName(RoleType.ROLE_AUTHOR))) {
+            authorService.deleteById(authorService.findAuthorByUsername(user.getUsername()).getId());
+        }
+
         userRepository.deleteById(id);
     }
 
@@ -100,7 +109,7 @@ public class UserServiceImpl implements UserService {
     public void addReadBook(String name) {
         User user = getAuthenticatedUser();
 
-        Book book = bookRepository.findBookByName(name).orElseThrow(BookNotFoundException::new);
+        Book book = bookService.findBookByName(name).orElseThrow(BookNotFoundException::new);
         user.getReadList().add(book);
         userRepository.save(user);
     }
@@ -109,7 +118,7 @@ public class UserServiceImpl implements UserService {
     public void addFavoriteBook(String name) {
         User user = getAuthenticatedUser();
 
-        Book book = bookRepository.findBookByName(name).orElseThrow(BookNotFoundException::new);
+        Book book = bookService.findBookByName(name).orElseThrow(BookNotFoundException::new);
         user.getFavoriteList().add(book);
         userRepository.save(user);
     }
@@ -117,7 +126,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteReadBook(String name) {
         User user = getAuthenticatedUser();
-        Book book = bookRepository.findBookByName(name).orElseThrow(BookNotFoundException::new);
+        Book book = bookService.findBookByName(name).orElseThrow(BookNotFoundException::new);
 
         user.getReadList().remove(book);
         userRepository.save(user);
@@ -126,7 +135,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteFavoriteBook(String name) {
         User user = getAuthenticatedUser();
-        Book book = bookRepository.findBookByName(name).orElseThrow(BookNotFoundException::new);
+        Book book = bookService.findBookByName(name).orElseThrow(BookNotFoundException::new);
 
         user.getFavoriteList().remove(book);
         userRepository.save(user);

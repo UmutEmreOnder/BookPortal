@@ -12,6 +12,7 @@ import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BookRepository;
+import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
-    private final AuthorRepository authorRepository;
+    private final AuthorService authorService;
 
     @Override
     public List<BookDto> getAllBooks() {
@@ -63,11 +64,16 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
 
-        Iterable<Author> authors = authorRepository.findAll();
+        Iterable<Author> authors = authorService.findAll();
         for (Author author : authors) {
             author.getBooks().remove(book);
         }
 
         bookRepository.delete(book);
+    }
+
+    @Override
+    public Optional<Book> findBookByName(String name) {
+        return bookRepository.findBookByName(name);
     }
 }

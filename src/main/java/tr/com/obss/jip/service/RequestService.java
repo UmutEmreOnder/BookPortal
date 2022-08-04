@@ -11,4 +11,6 @@ public interface RequestService {
     List<RequestDto> getAllRequests();
 
     void acceptRequest(Long id);
+
+    void denyRequest(Long id);
 }

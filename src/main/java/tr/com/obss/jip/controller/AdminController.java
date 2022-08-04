@@ -73,6 +73,12 @@ public class AdminController {
         return Boolean.TRUE;
     }
 
+    @PostMapping("/request/deny")
+    public Boolean denyRequest(@RequestParam("id") Long id) {
+        requestService.denyRequest(id);
+        return Boolean.TRUE;
+    }
+
 
     // Book Part
     @GetMapping("/book/all")

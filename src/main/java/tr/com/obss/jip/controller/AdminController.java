@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tr.com.obss.jip.dto.AuthorDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.UserDto;
-import tr.com.obss.jip.dto.create.CreateNewAuthor;
 import tr.com.obss.jip.dto.create.CreateNewBook;
+import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.mapper.UserMapper;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
@@ -53,13 +54,16 @@ public class AdminController {
     // Author Part
 
     @PostMapping("/author/create")
-    public Boolean createNewAuthor(@RequestBody @Valid CreateNewAuthor createNewAuthor) {
+    public Boolean createNewAuthor(@RequestBody @Valid CreateNewUser createNewAuthor) {
         authorService.createNewAuthor(createNewAuthor);
-
-        // Authentication icin ilginc bi cozum ama ise yariyo
-        userService.createNewAuthor(userMapper.mapTo(createNewAuthor));
         return Boolean.TRUE;
     }
+
+    @GetMapping("/author/all")
+    public List<AuthorDto> getAllAuthors() {
+        return authorService.getAllAuthors();
+    }
+
 
     // Request Part
     @GetMapping("/request/all")

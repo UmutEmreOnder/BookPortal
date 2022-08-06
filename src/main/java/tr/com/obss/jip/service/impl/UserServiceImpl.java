@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findByName(String name) {
-        final User user = userRepository.findUserByName(name).orElseThrow(UserNotFoundException::new);
+        final User user = userRepository.findUserByName(name).orElseThrow(() -> new UserNotFoundException(name));
         return userMapper.mapTo(user);
     }
 
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
         if (user.getRoles().contains(roleService.findByName(RoleType.ROLE_AUTHOR))) {
             authorService.deleteById(authorService.findAuthorByUsername(user.getUsername()).getId());
@@ -107,54 +107,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addReadBook(String name) {
         User user = getAuthenticatedUser();
-
-        Book book = bookService.findBookByName(name).orElseThrow(BookNotFoundException::new);
-        user.getReadList().add(book);
+        addBookToList(name, user.getReadList());
         userRepository.save(user);
     }
 
     @Override
     public void addFavoriteBook(String name) {
         User user = getAuthenticatedUser();
-
-        Book book = bookService.findBookByName(name).orElseThrow(BookNotFoundException::new);
-        user.getFavoriteList().add(book);
+        addBookToList(name, user.getFavoriteList());
         userRepository.save(user);
+    }
+
+    private void addBookToList(String bookName, List<Book> list) {
+        Book book = bookService.findBookByName(bookName).orElseThrow(() -> new BookNotFoundException(bookName));
+        list.add(book);
     }
 
     @Override
     public void deleteReadBook(String name) {
         User user = getAuthenticatedUser();
-        Book book = bookService.findBookByName(name).orElseThrow(BookNotFoundException::new);
-
-        user.getReadList().remove(book);
+        deleteBookFromList(name, user.getReadList());
         userRepository.save(user);
     }
 
     @Override
     public void deleteFavoriteBook(String name) {
         User user = getAuthenticatedUser();
-        Book book = bookService.findBookByName(name).orElseThrow(BookNotFoundException::new);
-
-        user.getFavoriteList().remove(book);
+        deleteBookFromList(name, user.getFavoriteList());
         userRepository.save(user);
     }
 
-    @Override
-    public void createNewAuthor(CreateNewUser createNewUserRequest) {
-        final Optional<User> existUser = userRepository.findUserByUsername(createNewUserRequest.getUsername());
-
-        if (existUser.isPresent()) {
-            throw new UserAlreadyExistException(createNewUserRequest.getUsername());
-        }
-
-        User user = userMapper.mapTo(createNewUserRequest);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        final Role standardRole = roleService.findByName(RoleType.ROLE_AUTHOR);
-        user.setRoles(List.of(standardRole));
-
-        userRepository.save(user);
+    private void deleteBookFromList(String bookName, List<Book> list) {
+        Book book = bookService.findBookByName(bookName).orElseThrow(() -> new BookNotFoundException(bookName));
+        list.remove(book);
     }
 
     @Override

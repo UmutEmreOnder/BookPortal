@@ -30,8 +30,6 @@ public interface UserService {
 
     void deleteFavoriteBook(String name);
 
-    void createNewAuthor(CreateNewUser mapTo);
-
     List<BookDto> getFavoriteBooks();
 
     List<BookDto> getReadBooks();

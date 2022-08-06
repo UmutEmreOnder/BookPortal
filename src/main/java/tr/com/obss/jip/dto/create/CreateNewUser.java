@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import tr.com.obss.jip.annotations.NotNBE;
 
+import javax.persistence.Column;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
@@ -24,6 +26,11 @@ public class CreateNewUser {
     @PositiveOrZero
     @Max(120)
     private Integer age;
+
+    @Email
+    @Column(unique = true)
+    @NotNBE
+    private String email;
 
     @NotNBE
     private String username;

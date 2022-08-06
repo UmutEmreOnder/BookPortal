@@ -6,9 +6,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tr.com.obss.jip.exception.UserNotFoundException;
+import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
-import tr.com.obss.jip.model.User;
+import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.RoleService;
 import tr.com.obss.jip.service.UserService;
 
@@ -21,6 +22,7 @@ import java.util.List;
 public class AppInitConfig {
     private final RoleService roleService;
     private final UserService userService;
+    private final BaseUserService baseUserService;
 
     @Bean
     public CommandLineRunner initRoles() {
@@ -36,17 +38,16 @@ public class AppInitConfig {
             try {
                 userService.findByUsername("sys.admin");
             } catch (UserNotFoundException userNotFoundException) {
-                User adminUser = User
+                BaseUser adminUser = BaseUser
                         .builder()
                         .name("System")
                         .surname("Admin")
-                        .age(99)
                         .username("sys.admin")
                         .password("admin")
                         .roles(List.of(roleService.findByName(RoleType.ROLE_ADMIN), roleService.findByName(RoleType.ROLE_USER)))
                         .build();
 
-                userService.createUser(adminUser);
+                baseUserService.createUser(adminUser);
             }
         };
     }

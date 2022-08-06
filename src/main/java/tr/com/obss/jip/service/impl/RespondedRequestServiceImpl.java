@@ -8,15 +8,13 @@ import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Request;
 import tr.com.obss.jip.model.RespondType;
 import tr.com.obss.jip.model.RespondedRequest;
-import tr.com.obss.jip.repository.RespondedRequestRepository;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.RespondedRequestService;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class RespondedServiceImpl implements RespondedRequestService {
-    private final RespondedRequestRepository respondedRequestRepository;
+public class RespondedRequestServiceImpl implements RespondedRequestService {
     private final RespondedRequestMapper respondedRequestMapper;
     private final AuthorService authorService;
 

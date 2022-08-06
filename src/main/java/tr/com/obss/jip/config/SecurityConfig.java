@@ -12,8 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import tr.com.obss.jip.dto.MyUserDetails;
-import tr.com.obss.jip.model.User;
+import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.service.AuthorService;
+import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.UserService;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
 public class SecurityConfig {
     private final UserService userService;
     private final AuthorService authorService;
+    private final BaseUserService baseUserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, DaoAuthenticationProvider daoAuthenticationProvider) throws Exception {
@@ -64,9 +66,9 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            final User user = userService.getUserByUsername(username);
-            List<String> list = user.getRoles().stream().map(role -> role.getName().name()).toList();
-            return new MyUserDetails(user.getUsername(), user.getPassword(), list);
+            final BaseUser user = baseUserService.getUserByUsername(username);
+            List<String> roleList = user.getRoles().stream().map(role -> role.getName().name()).toList();
+            return new MyUserDetails(user.getUsername(), user.getPassword(), roleList);
         };
     }
 }

@@ -7,11 +7,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tr.com.obss.jip.dto.AuthorDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.RespondedRequestDto;
-import tr.com.obss.jip.dto.create.CreateNewAuthor;
 import tr.com.obss.jip.dto.create.CreateNewRequest;
+import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.exception.AuthorAlreadyExistException;
 import tr.com.obss.jip.exception.AuthorNotFoundException;
 import tr.com.obss.jip.mapper.AuthorMapper;
@@ -25,6 +26,7 @@ import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.RoleService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +53,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void createNewAuthor(CreateNewAuthor createNewAuthor) {
+    public void createNewAuthor(CreateNewUser createNewAuthor) {
         final Optional<Author> existUser = authorRepository.findAuthorByUsername(createNewAuthor.getUsername());
 
         if (existUser.isPresent()) {
@@ -69,12 +71,12 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author findAuthorByUsername(String username) {
-        return authorRepository.findAuthorByUsername(username).orElseThrow(AuthorNotFoundException::new);
+        return authorRepository.findAuthorByUsername(username).orElseThrow(() -> new AuthorNotFoundException(username));
     }
 
     @Override
     public Author findAuthorById(Long id) {
-        return authorRepository.findById(id).orElseThrow(AuthorNotFoundException::new);
+        return authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
     }
 
     @Override
@@ -105,6 +107,16 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<RespondedRequestDto> getAllRespondedRequests() {
         return getAuthenticatedAuthor().getRespondedRequests().stream().map(respondedRequestMapper::mapTo).toList();
+    }
+
+    @Override
+    public List<AuthorDto> getAllAuthors() {
+        Iterable<Author> authors = authorRepository.findAll();
+
+        List<AuthorDto> authorDtos = new ArrayList<>();
+        authors.forEach(author -> authorDtos.add(authorMapper.mapTo(author)));
+
+        return authorDtos;
     }
 
     private Author getAuthenticatedAuthor() {

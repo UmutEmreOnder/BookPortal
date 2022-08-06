@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
-import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.exception.RequestNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.RequestMapper;
@@ -31,12 +30,6 @@ public class RequestServiceImpl implements RequestService {
     private final BookService bookService;
     private final BookMapper bookMapper;
     private final RespondedRequestService respondedRequestService;
-
-
-    @Override
-    public void createRequest(CreateNewRequest createNewRequest) {
-        requestRepository.save(requestMapper.mapTo(createNewRequest));
-    }
 
     @Override
     public List<RequestDto> getAllRequests() {

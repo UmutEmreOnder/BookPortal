@@ -26,4 +26,6 @@ public class BookDto {
 
     @NotNBE
     private String isbn;
+
+    private AuthorDto author;
 }

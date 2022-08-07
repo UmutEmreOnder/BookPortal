@@ -26,4 +26,7 @@ public class AuthorDto {
 
     @NotNBE
     private String surname;
+
+    @NotNBE
+    private String email;
 }

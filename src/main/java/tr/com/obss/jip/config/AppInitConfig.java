@@ -36,7 +36,7 @@ public class AppInitConfig {
             });
 
             try {
-                userService.findByUsername("sys.admin");
+                baseUserService.getUserByUsername("sys.admin");
             } catch (UserNotFoundException userNotFoundException) {
                 BaseUser adminUser = BaseUser
                         .builder()

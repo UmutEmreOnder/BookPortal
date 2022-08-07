@@ -16,12 +16,6 @@ public interface UserService {
 
     UserDto findByUsername(String username);
 
-    User getUserByUsername(String username);
-
-    void createUser(User adminUser);
-
-    void deleteUser(Long id);
-
     void addReadBook(String name);
 
     void addFavoriteBook(String name);

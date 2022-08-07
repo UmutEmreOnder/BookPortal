@@ -19,6 +19,7 @@ import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.model.User;
+import tr.com.obss.jip.repository.BookRepository;
 import tr.com.obss.jip.repository.UserRepository;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
@@ -36,13 +37,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final BookRepository bookRepository;
 
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
-    private final BookService bookService;
     private final BookMapper bookMapper;
-    private final AuthorService authorService;
 
 
     public List<UserDto> getAllUsers() {
@@ -83,28 +83,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username).orElseThrow(() -> new UserNotFoundException(String.format("%s is not found", username)));
-    }
-
-    @Override
-    public void createUser(User adminUser) {
-        adminUser.setPassword(passwordEncoder.encode(adminUser.getPassword()));
-        userRepository.save(adminUser);
-    }
-
-    @Override
-    public void deleteUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-
-        if (user.getRoles().contains(roleService.findByName(RoleType.ROLE_AUTHOR))) {
-            authorService.deleteById(authorService.findAuthorByUsername(user.getUsername()).getId());
-        }
-
-        userRepository.deleteById(id);
-    }
-
-    @Override
     public void addReadBook(String name) {
         User user = getAuthenticatedUser();
         addBookToList(name, user.getReadList());
@@ -119,7 +97,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void addBookToList(String bookName, List<Book> list) {
-        Book book = bookService.findBookByName(bookName).orElseThrow(() -> new BookNotFoundException(bookName));
+        Book book = bookRepository.findBookByName(bookName).orElseThrow(() -> new BookNotFoundException(bookName));
         list.add(book);
     }
 
@@ -138,7 +116,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void deleteBookFromList(String bookName, List<Book> list) {
-        Book book = bookService.findBookByName(bookName).orElseThrow(() -> new BookNotFoundException(bookName));
+        Book book = bookRepository.findBookByName(bookName).orElseThrow(() -> new BookNotFoundException(bookName));
         list.remove(book);
     }
 

@@ -26,4 +26,9 @@ public class BaseUserServiceImpl implements BaseUserService {
     public BaseUser getUserByUsername(String username) {
         return baseUserRepository.findUserByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
     }
+
+    @Override
+    public void deleteUser(long id) {
+        baseUserRepository.deleteById(id);
+    }
 }

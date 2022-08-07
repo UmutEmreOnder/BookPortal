@@ -5,14 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
+import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.exception.RequestNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Request;
 import tr.com.obss.jip.model.RespondType;
+import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.RequestRepository;
-import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RespondedRequestService;
@@ -25,12 +26,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RequestServiceImpl implements RequestService {
     private final RequestRepository requestRepository;
+    private final AuthorRepository authorRepository;
     private final RequestMapper requestMapper;
-    private final AuthorService authorService;
     private final BookService bookService;
     private final BookMapper bookMapper;
     private final RespondedRequestService respondedRequestService;
 
+    @Override
+    public void addNewRequest(CreateNewRequest createNewRequest, Author author) {
+        createNewRequest.setAuthor(author);
+        author.getRequests().add(requestMapper.mapTo(createNewRequest));
+
+        authorRepository.save(author);
+    }
     @Override
     public List<RequestDto> getAllRequests() {
         Iterable<Request> requests = requestRepository.findAll();
@@ -57,7 +65,7 @@ public class RequestServiceImpl implements RequestService {
         Author author = request.getAuthor();
         author.getBooks().add(bookMapper.mapTo(bookService.findByName(request.getBookName())));
         author.getRequests().remove(request);
-        authorService.save(author);
+        authorRepository.save(author);
 
         requestRepository.delete(request);
 
@@ -70,7 +78,7 @@ public class RequestServiceImpl implements RequestService {
 
         Author author = request.getAuthor();
         author.getRequests().remove(request);
-        authorService.save(author);
+        authorRepository.save(author);
 
         requestRepository.delete(request);
 

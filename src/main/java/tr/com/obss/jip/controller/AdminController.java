@@ -16,6 +16,7 @@ import tr.com.obss.jip.dto.create.CreateNewBook;
 import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.mapper.UserMapper;
 import tr.com.obss.jip.service.AuthorService;
+import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.UserService;
@@ -32,7 +33,7 @@ public class AdminController {
     private final BookService bookService;
     private final AuthorService authorService;
     private final RequestService requestService;
-    private final UserMapper userMapper;
+    private final BaseUserService baseUserService;
 
     // User Part
     @GetMapping("/user/all")
@@ -47,7 +48,7 @@ public class AdminController {
 
     @PostMapping("/user/delete")
     public Boolean deleteUser(@RequestParam("id") Long id) {
-        userService.deleteUser(id);
+        baseUserService.deleteUser(id);
         return Boolean.TRUE;
     }
 

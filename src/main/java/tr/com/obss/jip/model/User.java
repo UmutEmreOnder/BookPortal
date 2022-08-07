@@ -19,10 +19,10 @@ import java.util.List;
 
 @Entity
 public class User extends BaseUser {
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Book> readList;
 
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Book> favoriteList;
 }

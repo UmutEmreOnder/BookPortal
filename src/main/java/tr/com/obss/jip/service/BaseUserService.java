@@ -6,4 +6,6 @@ public interface BaseUserService {
     void createUser(BaseUser adminUser);
 
     BaseUser getUserByUsername(String username);
+
+    void deleteUser(long id);
 }

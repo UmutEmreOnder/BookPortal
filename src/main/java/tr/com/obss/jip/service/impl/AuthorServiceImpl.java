@@ -24,6 +24,7 @@ import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.service.AuthorService;
+import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RoleService;
 
 import java.util.ArrayList;
@@ -41,15 +42,11 @@ public class AuthorServiceImpl implements AuthorService {
     private final RequestMapper requestMapper;
     private final BookMapper bookMapper;
     private final RespondedRequestMapper respondedRequestMapper;
+    private final RequestService requestService;
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest) {
-        Author author = getAuthenticatedAuthor();
-
-        createNewRequest.setAuthor(author);
-        author.getRequests().add(requestMapper.mapTo(createNewRequest));
-
-        authorRepository.save(author);
+        requestService.addNewRequest(createNewRequest, getAuthenticatedAuthor());
     }
 
     @Override
@@ -77,21 +74,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author findAuthorById(Long id) {
         return authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
-    }
-
-    @Override
-    public void save(Author author) {
-        authorRepository.save(author);
-    }
-
-    @Override
-    public Iterable<Author> findAll() {
-        return authorRepository.findAll();
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        authorRepository.deleteById(id);
     }
 
     @Override

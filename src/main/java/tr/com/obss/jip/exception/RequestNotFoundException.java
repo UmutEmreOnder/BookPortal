@@ -9,6 +9,6 @@ public class RequestNotFoundException extends BaseException {
     }
 
     public RequestNotFoundException(Long id) {
-        super(String.format("Request with id %d is not exist", id));
+        super(String.format("AddingBookRequest with id %d is not exist", id));
     }
 }

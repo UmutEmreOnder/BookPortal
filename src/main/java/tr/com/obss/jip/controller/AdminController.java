@@ -66,7 +66,7 @@ public class AdminController {
     }
 
 
-    // Request Part
+    // AddingBookRequest Part
     @GetMapping("/request/all")
     public List<RequestDto> getAllRequest() {
         return requestService.getAllRequests();

@@ -78,7 +78,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<RequestDto> getAllRequests() {
-        return getAuthenticatedAuthor().getRequests().stream().map(requestMapper::mapTo).toList();
+        return getAuthenticatedAuthor().getAddingBookRequests().stream().map(requestMapper::mapTo).toList();
     }
 
     @Override
@@ -88,7 +88,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<RespondedRequestDto> getAllRespondedRequests() {
-        return getAuthenticatedAuthor().getRespondedRequests().stream().map(respondedRequestMapper::mapTo).toList();
+        return getAuthenticatedAuthor().getRespondedBookRequests().stream().map(respondedRequestMapper::mapTo).toList();
     }
 
     @Override

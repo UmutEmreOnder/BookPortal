@@ -2,9 +2,9 @@ package tr.com.obss.jip.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import tr.com.obss.jip.model.RespondedRequest;
+import tr.com.obss.jip.model.RespondedBookRequest;
 
 @Repository
-public interface RespondedRequestRepository extends CrudRepository<RespondedRequest, Long> {
+public interface RespondedRequestRepository extends CrudRepository<RespondedBookRequest, Long> {
 
 }

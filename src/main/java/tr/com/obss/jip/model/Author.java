@@ -23,8 +23,8 @@ public class Author extends BaseUser {
     private List<Book> books;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Request> requests;
+    private List<AddingBookRequest> addingBookRequests;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RespondedRequest> respondedRequests;
+    private List<RespondedBookRequest> respondedBookRequests;
 }

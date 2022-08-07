@@ -9,8 +9,6 @@ import tr.com.obss.jip.annotations.NotNBE;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,12 +16,12 @@ import javax.persistence.OneToOne;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
-public class RespondedRequest {
+public class AddingBookRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -37,8 +35,4 @@ public class RespondedRequest {
 
     @OneToOne
     private Author author;
-
-    @Enumerated(EnumType.STRING)
-    @NotNBE
-    private RespondType respond;
 }

@@ -9,8 +9,8 @@ import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.exception.RequestNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.RequestMapper;
+import tr.com.obss.jip.model.AddingBookRequest;
 import tr.com.obss.jip.model.Author;
-import tr.com.obss.jip.model.Request;
 import tr.com.obss.jip.model.RespondType;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.RequestRepository;
@@ -35,13 +35,13 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest, Author author) {
         createNewRequest.setAuthor(author);
-        author.getRequests().add(requestMapper.mapTo(createNewRequest));
+        author.getAddingBookRequests().add(requestMapper.mapTo(createNewRequest));
 
         authorRepository.save(author);
     }
     @Override
     public List<RequestDto> getAllRequests() {
-        Iterable<Request> requests = requestRepository.findAll();
+        Iterable<AddingBookRequest> requests = requestRepository.findAll();
         List<RequestDto> retList = new ArrayList<>();
 
         requests.forEach(request -> retList.add(requestMapper.mapTo(request)));
@@ -51,37 +51,37 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public void acceptRequest(Long id) {
-        Request request = requestRepository.findById(id).orElseThrow(() -> new RequestNotFoundException(id));
+        AddingBookRequest addingBookRequest = requestRepository.findById(id).orElseThrow(() -> new RequestNotFoundException(id));
 
         CreateNewBook createNewBook = CreateNewBook
                 .builder()
-                .name(request.getBookName())
-                .isbn(request.getBookIsbn())
-                .author(request.getAuthor())
+                .name(addingBookRequest.getBookName())
+                .isbn(addingBookRequest.getBookIsbn())
+                .author(addingBookRequest.getAuthor())
                 .build();
 
         bookService.createNewBook(createNewBook);
 
-        Author author = request.getAuthor();
-        author.getBooks().add(bookMapper.mapTo(bookService.findByName(request.getBookName())));
-        author.getRequests().remove(request);
+        Author author = addingBookRequest.getAuthor();
+        author.getBooks().add(bookMapper.mapTo(bookService.findByName(addingBookRequest.getBookName())));
+        author.getAddingBookRequests().remove(addingBookRequest);
         authorRepository.save(author);
 
-        requestRepository.delete(request);
+        requestRepository.delete(addingBookRequest);
 
-        respondedRequestService.create(request, author, RespondType.ACCEPTED);
+        respondedRequestService.create(addingBookRequest, author, RespondType.ACCEPTED);
     }
 
     @Override
     public void denyRequest(Long id) {
-        Request request = requestRepository.findById(id).orElseThrow(() -> new RequestNotFoundException(id));
+        AddingBookRequest addingBookRequest = requestRepository.findById(id).orElseThrow(() -> new RequestNotFoundException(id));
 
-        Author author = request.getAuthor();
-        author.getRequests().remove(request);
+        Author author = addingBookRequest.getAuthor();
+        author.getAddingBookRequests().remove(addingBookRequest);
         authorRepository.save(author);
 
-        requestRepository.delete(request);
+        requestRepository.delete(addingBookRequest);
 
-        respondedRequestService.create(request, author, RespondType.DENIED);
+        respondedRequestService.create(addingBookRequest, author, RespondType.DENIED);
     }
 }

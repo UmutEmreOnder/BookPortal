@@ -3,13 +3,13 @@ package tr.com.obss.jip.mapper;
 import org.mapstruct.Mapper;
 import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.create.CreateNewRequest;
-import tr.com.obss.jip.model.Request;
+import tr.com.obss.jip.model.AddingBookRequest;
 
 @Mapper(componentModel = "spring")
 public interface RequestMapper {
-    Request mapTo(RequestDto requestDto);
+    AddingBookRequest mapTo(RequestDto requestDto);
 
-    RequestDto mapTo(Request request);
+    RequestDto mapTo(AddingBookRequest addingBookRequest);
 
-    Request mapTo(CreateNewRequest createNewRequest);
+    AddingBookRequest mapTo(CreateNewRequest createNewRequest);
 }

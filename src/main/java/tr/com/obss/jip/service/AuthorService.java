@@ -26,4 +26,8 @@ public interface AuthorService {
     List<RespondedRequestDto> getAllRespondedRequests();
 
     List<AuthorDto> getAllAuthors();
+
+    void updateAuthor(Long id, CreateNewUser createNewAuthor);
+
+    void updateAuthor(CreateNewUser createNewAuthor);
 }

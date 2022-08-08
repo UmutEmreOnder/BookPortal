@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,11 +53,23 @@ public class AdminController {
         return Boolean.TRUE;
     }
 
+    @PutMapping("/user/update")
+    public Boolean updateUser(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewUser) {
+        userService.updateUser(id, createNewUser);
+        return Boolean.TRUE;
+    }
+
     // Author Part
 
     @PostMapping("/author/create")
     public Boolean createNewAuthor(@RequestBody @Valid CreateNewUser createNewAuthor) {
         authorService.createNewAuthor(createNewAuthor);
+        return Boolean.TRUE;
+    }
+
+    @PutMapping("/author/update")
+    public Boolean updateAuthor(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewAuthor) {
+        authorService.updateAuthor(id, createNewAuthor);
         return Boolean.TRUE;
     }
 
@@ -105,6 +118,12 @@ public class AdminController {
     @PostMapping("/book/delete")
     public Boolean deleteBook(@RequestParam("id") Long id) {
         bookService.deleteBook(id);
+        return Boolean.TRUE;
+    }
+
+    @PutMapping("/book/update")
+    public Boolean updateBook(@RequestParam("id") Long id, @RequestBody @Valid CreateNewBook createNewBook) {
+        bookService.updateBook(id, createNewBook);
         return Boolean.TRUE;
     }
 

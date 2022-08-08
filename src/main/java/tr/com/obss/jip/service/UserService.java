@@ -27,4 +27,7 @@ public interface UserService {
     List<BookDto> getFavoriteBooks();
 
     List<BookDto> getReadBooks();
+
+    void updateUser(Long id, CreateNewUser createNewUser);
+    void updateUser(CreateNewUser createNewUser);
 }

@@ -38,5 +38,8 @@ public class AddingBookRequest {
     private Author author;
 
     @NotNBE
+    private String genreName;
+
+    @NotNBE
     private Date createDate;
 }

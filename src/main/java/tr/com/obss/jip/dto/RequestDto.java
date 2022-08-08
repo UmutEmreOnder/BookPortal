@@ -35,5 +35,8 @@ public class RequestDto {
     private AuthorDto author;
 
     @NotNBE
+    private String genreName;
+
+    @NotNBE
     private Date createDate;
 }

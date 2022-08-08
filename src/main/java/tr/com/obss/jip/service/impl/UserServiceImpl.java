@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
+import tr.com.obss.jip.exception.AuthorNotFoundException;
 import tr.com.obss.jip.exception.BookNotFoundException;
 import tr.com.obss.jip.exception.UserAlreadyExistException;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.UserMapper;
+import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
@@ -132,6 +134,36 @@ public class UserServiceImpl implements UserService {
     public List<BookDto> getReadBooks() {
         User user = getAuthenticatedUser();
         return user.getReadList().stream().map(bookMapper::mapTo).toList();
+    }
+
+    @Override
+    public void updateUser(Long id, CreateNewUser createNewUser) {
+        final User userExists = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+        User user = userMapper.mapTo(createNewUser);
+        user.setId(id);
+        user.setRoles(userExists.getRoles());
+        user.setCreateDate(userExists.getCreateDate());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setReadList(userExists.getReadList());
+        user.setFavoriteList(userExists.getFavoriteList());
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateUser(CreateNewUser createNewUser) {
+        final User authenticatedUser = getAuthenticatedUser();
+
+        User user = userMapper.mapTo(createNewUser);
+        user.setId(authenticatedUser.getId());
+        user.setRoles(authenticatedUser.getRoles());
+        user.setCreateDate(authenticatedUser.getCreateDate());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setReadList(authenticatedUser.getReadList());
+        user.setFavoriteList(authenticatedUser.getFavoriteList());
+
+        userRepository.save(user);
     }
 
     private User getAuthenticatedUser() {

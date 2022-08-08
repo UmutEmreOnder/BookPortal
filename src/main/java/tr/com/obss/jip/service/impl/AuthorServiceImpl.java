@@ -103,6 +103,38 @@ public class AuthorServiceImpl implements AuthorService {
         return authorDtos;
     }
 
+    @Override
+    public void updateAuthor(Long id, CreateNewUser createNewAuthor) {
+        final Author authorExist = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
+
+        Author author = authorMapper.mapTo(createNewAuthor);
+        author.setId(id);
+        author.setRoles(authorExist.getRoles());
+        author.setCreateDate(authorExist.getCreateDate());
+        author.setBooks(authorExist.getBooks());
+        author.setAddingBookRequests(authorExist.getAddingBookRequests());
+        author.setRespondedBookRequests(authorExist.getRespondedBookRequests());
+        author.setPassword(passwordEncoder.encode(author.getPassword()));
+
+        authorRepository.save(author);
+    }
+
+    @Override
+    public void updateAuthor(CreateNewUser createNewAuthor) {
+        final Author authenticatedAuthor = getAuthenticatedAuthor();
+
+        Author author = authorMapper.mapTo(createNewAuthor);
+        author.setId(authenticatedAuthor.getId());
+        author.setRoles(authenticatedAuthor.getRoles());
+        author.setCreateDate(authenticatedAuthor.getCreateDate());
+        author.setBooks(authenticatedAuthor.getBooks());
+        author.setAddingBookRequests(authenticatedAuthor.getAddingBookRequests());
+        author.setRespondedBookRequests(authenticatedAuthor.getRespondedBookRequests());
+        author.setPassword(passwordEncoder.encode(author.getPassword()));
+
+        authorRepository.save(author);
+    }
+
     private Author getAuthenticatedAuthor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

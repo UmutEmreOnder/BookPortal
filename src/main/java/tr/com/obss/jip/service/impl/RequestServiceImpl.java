@@ -62,6 +62,7 @@ public class RequestServiceImpl implements RequestService {
                 .name(addingBookRequest.getBookName())
                 .isbn(addingBookRequest.getBookIsbn())
                 .author(addingBookRequest.getAuthor())
+                .genreName(addingBookRequest.getGenreName())
                 .build();
 
         bookService.createNewBook(createNewBook);

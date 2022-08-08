@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tr.com.obss.jip.annotations.NotNBE;
+import tr.com.obss.jip.model.Genre;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,6 +32,8 @@ public class BookDto {
 
     @ManyToOne
     private AuthorDto author;
+
+    private Genre genre;
 
     @NotNBE
     private Date createDate;

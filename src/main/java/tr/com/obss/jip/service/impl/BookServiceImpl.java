@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
+import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.exception.BookAlreadyExistException;
 import tr.com.obss.jip.exception.BookNotFoundException;
 import tr.com.obss.jip.exception.GenreNotFoundException;
@@ -55,9 +56,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void createNewBook(CreateNewBook createNewBookRequest) {
-        final Optional<Book> existBook = bookRepository.findBookByName(createNewBookRequest.getName());
+        final Optional<Book> bookExist = bookRepository.findBookByName(createNewBookRequest.getName());
 
-        if (existBook.isPresent()) {
+        if (bookExist.isPresent()) {
             throw new BookAlreadyExistException(createNewBookRequest.getName());
         }
 
@@ -71,8 +72,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void updateBook(BookDto bookDto) {
-        // ?
+    public void updateBook(Long id, CreateNewBook createNewBook) {
+        final Book bookExist = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
+
+        Book book = bookMapper.mapTo(createNewBook);
+        book.setId(id);
+        book.setAuthor(bookExist.getAuthor());
+        book.setGenre(bookExist.getGenre());
+        book.setCreateDate(bookExist.getCreateDate());
+
+        bookRepository.save(book);
     }
 
     @Override

@@ -18,4 +18,6 @@ public class CreateNewRequest {
 
     @OneToOne
     private Author author;
+
+    private String genreName;
 }

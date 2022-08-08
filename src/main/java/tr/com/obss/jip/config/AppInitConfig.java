@@ -7,12 +7,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.model.BaseUser;
+import tr.com.obss.jip.model.Genre;
+import tr.com.obss.jip.model.GenreType;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.service.BaseUserService;
+import tr.com.obss.jip.service.GenreService;
 import tr.com.obss.jip.service.RoleService;
 import tr.com.obss.jip.service.UserService;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +26,7 @@ import java.util.List;
 @Configuration
 public class AppInitConfig {
     private final RoleService roleService;
-    private final UserService userService;
+    private final GenreService genreService;
     private final BaseUserService baseUserService;
 
     @Bean
@@ -34,6 +38,14 @@ public class AppInitConfig {
                 Role role = new Role();
                 role.setName(roleType);
                 roleService.createNewRole(role);
+            });
+
+            final List<GenreType> allGenres = genreService.getAllGenres().stream().map(Genre::getName).toList();
+
+            Arrays.stream(GenreType.values()).filter(genreType -> !allGenres.contains(genreType)).forEach(genreType -> {
+                Genre genre = new Genre();
+                genre.setName(genreType);
+                genreService.createNewGenre(genre);
             });
 
             try {

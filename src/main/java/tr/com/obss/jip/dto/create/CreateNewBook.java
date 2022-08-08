@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tr.com.obss.jip.annotations.NotNBE;
 import tr.com.obss.jip.model.Author;
+import tr.com.obss.jip.model.Genre;
 
 @Getter
 @Setter
@@ -21,4 +22,6 @@ public class CreateNewBook {
     private String isbn;
 
     private Author author;
+
+    private String genreName;
 }

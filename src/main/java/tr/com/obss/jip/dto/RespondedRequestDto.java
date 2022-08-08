@@ -10,6 +10,7 @@ import tr.com.obss.jip.model.RespondType;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -26,4 +27,7 @@ public class RespondedRequestDto {
     @Enumerated(EnumType.STRING)
     @NotNBE
     private RespondType respond;
+
+    @NotNBE
+    private Date createDate;
 }

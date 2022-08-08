@@ -39,4 +39,7 @@ public class Book {
 
     @NotNBE
     private Date createDate;
+
+    @ManyToOne
+    private Genre genre;
 }

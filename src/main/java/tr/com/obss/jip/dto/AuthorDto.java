@@ -10,6 +10,7 @@ import tr.com.obss.jip.annotations.NotNBE;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -29,4 +30,7 @@ public class AuthorDto {
 
     @NotNBE
     private String email;
+
+    @NotNBE
+    private Date createDate;
 }

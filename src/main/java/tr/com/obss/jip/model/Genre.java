@@ -1,4 +1,4 @@
-package tr.com.obss.jip.dto;
+package tr.com.obss.jip.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,32 +7,28 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tr.com.obss.jip.annotations.NotNBE;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import java.util.Date;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDto {
+
+@Entity
+public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, unique = true)
     @NotNBE
-    private String name;
-
-    @NotNBE
-    private String isbn;
-
-    @ManyToOne
-    private AuthorDto author;
-
-    @NotNBE
-    private Date createDate;
+    private GenreType name;
 }
-

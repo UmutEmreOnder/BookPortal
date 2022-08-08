@@ -19,6 +19,7 @@ import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RespondedRequestService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,7 +36,10 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest, Author author) {
         createNewRequest.setAuthor(author);
-        author.getAddingBookRequests().add(requestMapper.mapTo(createNewRequest));
+        AddingBookRequest request = requestMapper.mapTo(createNewRequest);
+        request.setCreateDate(new Date());
+
+        author.getAddingBookRequests().add(request);
 
         authorRepository.save(author);
     }
@@ -64,12 +68,8 @@ public class RequestServiceImpl implements RequestService {
 
         Author author = addingBookRequest.getAuthor();
         author.getBooks().add(bookMapper.mapTo(bookService.findByName(addingBookRequest.getBookName())));
-        author.getAddingBookRequests().remove(addingBookRequest);
-        authorRepository.save(author);
 
-        requestRepository.delete(addingBookRequest);
-
-        respondedRequestService.create(addingBookRequest, author, RespondType.ACCEPTED);
+        removeRequestAndCreateRespond(author, addingBookRequest, RespondType.ACCEPTED);
     }
 
     @Override
@@ -77,11 +77,14 @@ public class RequestServiceImpl implements RequestService {
         AddingBookRequest addingBookRequest = requestRepository.findById(id).orElseThrow(() -> new RequestNotFoundException(id));
 
         Author author = addingBookRequest.getAuthor();
+        removeRequestAndCreateRespond(author, addingBookRequest, RespondType.DENIED);
+    }
+
+    private void removeRequestAndCreateRespond(Author author, AddingBookRequest addingBookRequest, RespondType type) {
         author.getAddingBookRequests().remove(addingBookRequest);
         authorRepository.save(author);
-
         requestRepository.delete(addingBookRequest);
 
-        respondedRequestService.create(addingBookRequest, author, RespondType.DENIED);
+        respondedRequestService.create(addingBookRequest, author, type);
     }
 }

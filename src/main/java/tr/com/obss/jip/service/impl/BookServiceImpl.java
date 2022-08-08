@@ -20,6 +20,7 @@ import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,8 @@ public class BookServiceImpl implements BookService {
         }
 
         Book book = bookMapper.mapTo(createNewBookRequest);
+        book.setCreateDate(new Date());
+
         bookRepository.save(book);
     }
 

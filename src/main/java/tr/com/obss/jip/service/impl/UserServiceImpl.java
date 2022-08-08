@@ -27,6 +27,7 @@ import tr.com.obss.jip.service.RoleService;
 import tr.com.obss.jip.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +65,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.mapTo(createNewUserRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setCreateDate(new Date());
 
         final Role standardRole = roleService.findByName(RoleType.ROLE_USER);
         user.setRoles(List.of(standardRole));

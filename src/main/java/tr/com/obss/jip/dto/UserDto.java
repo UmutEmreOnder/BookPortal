@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -42,6 +43,9 @@ public class UserDto {
 
     @NotNBE
     private String username;
+
+    @NotNBE
+    private Date createDate;
 
     @OneToMany
     private List<Book> readList;

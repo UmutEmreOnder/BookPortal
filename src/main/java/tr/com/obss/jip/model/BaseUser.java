@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.Date;
 import java.util.List;
 
 
@@ -54,6 +55,9 @@ public class BaseUser {
 
     @NotNBE
     private String password;
+
+    @NotNBE
+    private Date createDate;
 
     @ManyToMany
     private List<Role> roles;

@@ -28,6 +28,7 @@ import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RoleService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         Author author = authorMapper.mapTo(createNewAuthor);
         author.setPassword(passwordEncoder.encode(author.getPassword()));
+        author.setCreateDate(new Date());
 
         final Role standardRole = roleService.findByName(RoleType.ROLE_AUTHOR);
         author.setRoles(List.of(standardRole));

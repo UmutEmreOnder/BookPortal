@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -35,4 +36,7 @@ public class Book {
 
     @ManyToOne
     private Author author;
+
+    @NotNBE
+    private Date createDate;
 }

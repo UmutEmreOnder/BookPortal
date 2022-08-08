@@ -11,6 +11,8 @@ import tr.com.obss.jip.model.RespondedBookRequest;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.service.RespondedRequestService;
 
+import java.util.Date;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -22,6 +24,7 @@ public class RespondedRequestServiceImpl implements RespondedRequestService {
     public void create(AddingBookRequest addingBookRequest, Author author, RespondType type) {
         RespondedBookRequest respondedBookRequest = respondedRequestMapper.mapTo(addingBookRequest);
         respondedBookRequest.setRespond(type);
+        respondedBookRequest.setCreateDate(new Date());
 
         author.getRespondedBookRequests().add(respondedBookRequest);
         authorRepository.save(author);

@@ -14,6 +14,7 @@ import tr.com.obss.jip.service.RoleService;
 import tr.com.obss.jip.service.UserService;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -42,9 +43,12 @@ public class AppInitConfig {
                         .builder()
                         .name("System")
                         .surname("Admin")
+                        .age(0)
+                        .email("admin@bookportal.com")
                         .username("sys.admin")
                         .password("admin")
-                        .roles(List.of(roleService.findByName(RoleType.ROLE_ADMIN), roleService.findByName(RoleType.ROLE_USER)))
+                        .createDate(new Date())
+                        .roles(List.of(roleService.findByName(RoleType.ROLE_ADMIN)))
                         .build();
 
                 baseUserService.createUser(adminUser);

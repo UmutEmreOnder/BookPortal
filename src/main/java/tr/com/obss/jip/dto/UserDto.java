@@ -9,10 +9,12 @@ import org.hibernate.validator.constraints.Length;
 import tr.com.obss.jip.annotations.NotNBE;
 import tr.com.obss.jip.model.Book;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.Date;
@@ -40,6 +42,11 @@ public class UserDto {
     @PositiveOrZero
     @Max(120)
     private Integer age;
+
+    @NotNBE
+    @Email
+    @Column(unique = true)
+    private String email;
 
     @NotNBE
     private String username;

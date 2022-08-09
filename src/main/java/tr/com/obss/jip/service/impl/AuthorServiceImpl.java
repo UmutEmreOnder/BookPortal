@@ -108,13 +108,7 @@ public class AuthorServiceImpl implements AuthorService {
         final Author authorExist = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
 
         Author author = authorMapper.mapTo(createNewAuthor);
-        author.setId(id);
-        author.setRoles(authorExist.getRoles());
-        author.setCreateDate(authorExist.getCreateDate());
-        author.setBooks(authorExist.getBooks());
-        author.setAddingBookRequests(authorExist.getAddingBookRequests());
-        author.setRespondedBookRequests(authorExist.getRespondedBookRequests());
-        author.setPassword(passwordEncoder.encode(author.getPassword()));
+        transferFields(author, authorExist, id);
 
         authorRepository.save(author);
     }
@@ -124,15 +118,18 @@ public class AuthorServiceImpl implements AuthorService {
         final Author authenticatedAuthor = getAuthenticatedAuthor();
 
         Author author = authorMapper.mapTo(createNewAuthor);
-        author.setId(authenticatedAuthor.getId());
-        author.setRoles(authenticatedAuthor.getRoles());
-        author.setCreateDate(authenticatedAuthor.getCreateDate());
-        author.setBooks(authenticatedAuthor.getBooks());
-        author.setAddingBookRequests(authenticatedAuthor.getAddingBookRequests());
-        author.setRespondedBookRequests(authenticatedAuthor.getRespondedBookRequests());
-        author.setPassword(passwordEncoder.encode(author.getPassword()));
-
+        transferFields(author, authenticatedAuthor, authenticatedAuthor.getId());
         authorRepository.save(author);
+    }
+
+    private void transferFields(Author author, Author authorExist, Long id) {
+        author.setId(id);
+        author.setRoles(authorExist.getRoles());
+        author.setCreateDate(authorExist.getCreateDate());
+        author.setBooks(authorExist.getBooks());
+        author.setAddingBookRequests(authorExist.getAddingBookRequests());
+        author.setRespondedBookRequests(authorExist.getRespondedBookRequests());
+        author.setPassword(passwordEncoder.encode(author.getPassword()));
     }
 
     private Author getAuthenticatedAuthor() {

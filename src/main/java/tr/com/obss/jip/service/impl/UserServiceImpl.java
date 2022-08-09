@@ -141,12 +141,7 @@ public class UserServiceImpl implements UserService {
         final User userExists = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
         User user = userMapper.mapTo(createNewUser);
-        user.setId(id);
-        user.setRoles(userExists.getRoles());
-        user.setCreateDate(userExists.getCreateDate());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setReadList(userExists.getReadList());
-        user.setFavoriteList(userExists.getFavoriteList());
+        transferFields(user, userExists, id);
 
         userRepository.save(user);
     }
@@ -156,14 +151,18 @@ public class UserServiceImpl implements UserService {
         final User authenticatedUser = getAuthenticatedUser();
 
         User user = userMapper.mapTo(createNewUser);
-        user.setId(authenticatedUser.getId());
-        user.setRoles(authenticatedUser.getRoles());
-        user.setCreateDate(authenticatedUser.getCreateDate());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setReadList(authenticatedUser.getReadList());
-        user.setFavoriteList(authenticatedUser.getFavoriteList());
+        transferFields(user, authenticatedUser, authenticatedUser.getId());
 
         userRepository.save(user);
+    }
+
+    private void transferFields(User user, User userExists, Long id) {
+        user.setId(id);
+        user.setRoles(userExists.getRoles());
+        user.setCreateDate(userExists.getCreateDate());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setReadList(userExists.getReadList());
+        user.setFavoriteList(userExists.getFavoriteList());
     }
 
     private User getAuthenticatedUser() {

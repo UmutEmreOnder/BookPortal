@@ -9,10 +9,9 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
 
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create
-    show-sql: true
+      ddl-auto: update
+    show-sql: false
     properties:
       hibernate:
         show_sql: true

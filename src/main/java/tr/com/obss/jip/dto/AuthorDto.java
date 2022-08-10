@@ -6,11 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tr.com.obss.jip.annotations.NotNBE;
+import tr.com.obss.jip.model.Role;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,6 +33,9 @@ public class AuthorDto {
 
     @NotNBE
     private String email;
+
+    @ManyToMany
+    private List<Role> roles;
 
     @NotNBE
     private Date createDate;

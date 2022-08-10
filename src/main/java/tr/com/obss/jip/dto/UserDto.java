@@ -8,11 +8,13 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import tr.com.obss.jip.annotations.NotNBE;
 import tr.com.obss.jip.model.Book;
+import tr.com.obss.jip.model.Role;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -53,6 +55,9 @@ public class UserDto {
 
     @NotNBE
     private Date createDate;
+
+    @ManyToMany
+    private List<Role> roles;
 
     @OneToMany
     private List<Book> readList;

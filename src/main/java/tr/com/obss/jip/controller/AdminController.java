@@ -1,6 +1,7 @@
 package tr.com.obss.jip.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,7 @@ public class AdminController {
     private final BaseUserService baseUserService;
 
     // User Part
-    @GetMapping("/user/all")
+    @GetMapping("/user")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -47,13 +48,13 @@ public class AdminController {
         return userService.findByUsername(username);
     }
 
-    @PostMapping("/user/delete")
+    @DeleteMapping("/user")
     public Boolean deleteUser(@RequestParam("id") Long id) {
         baseUserService.deleteUser(id);
         return Boolean.TRUE;
     }
 
-    @PutMapping("/user/update")
+    @PutMapping("/user")
     public Boolean updateUser(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewUser) {
         userService.updateUser(id, createNewUser);
         return Boolean.TRUE;
@@ -61,26 +62,31 @@ public class AdminController {
 
     // Author Part
 
-    @PostMapping("/author/create")
+    @PostMapping("/author")
     public Boolean createNewAuthor(@RequestBody @Valid CreateNewUser createNewAuthor) {
         authorService.createNewAuthor(createNewAuthor);
         return Boolean.TRUE;
     }
 
-    @PutMapping("/author/update")
+    @PutMapping("/author")
     public Boolean updateAuthor(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewAuthor) {
         authorService.updateAuthor(id, createNewAuthor);
         return Boolean.TRUE;
     }
 
-    @GetMapping("/author/all")
+    @GetMapping("/author")
     public List<AuthorDto> getAllAuthors() {
         return authorService.getAllAuthors();
     }
 
+    @GetMapping("/author/{username}")
+    public AuthorDto getAuthor(@PathVariable("username") String username) {
+        return authorService.findAuthorByUsername(username);
+    }
+
 
     // AddingBookRequest Part
-    @GetMapping("/request/all")
+    @GetMapping("/request")
     public List<RequestDto> getAllRequest() {
         return requestService.getAllRequests();
     }
@@ -99,7 +105,7 @@ public class AdminController {
 
 
     // Book Part
-    @GetMapping("/book/all")
+    @GetMapping("/book")
     public List<BookDto> getAllBooks() {
         return bookService.getAllBooks();
     }
@@ -109,19 +115,19 @@ public class AdminController {
         return bookService.findByName(name);
     }
 
-    @PostMapping("/book/create")
+    @PostMapping("/book")
     public Boolean createNewBook(@RequestBody @Valid CreateNewBook createNewBookRequest) {
         bookService.createNewBook(createNewBookRequest);
         return true;
     }
 
-    @PostMapping("/book/delete")
+    @DeleteMapping("/book")
     public Boolean deleteBook(@RequestParam("id") Long id) {
         bookService.deleteBook(id);
         return Boolean.TRUE;
     }
 
-    @PutMapping("/book/update")
+    @PutMapping("/book")
     public Boolean updateBook(@RequestParam("id") Long id, @RequestBody @Valid CreateNewBook createNewBook) {
         bookService.updateBook(id, createNewBook);
         return Boolean.TRUE;

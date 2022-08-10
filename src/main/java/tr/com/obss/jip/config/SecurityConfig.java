@@ -44,8 +44,6 @@ public class SecurityConfig {
                 .hasRole("USER")
                 .antMatchers("/api/admin/**")
                 .hasRole("ADMIN")
-                .antMatchers("/api/auth/**")
-                .hasRole("ADMIN")
                 .antMatchers("/api/author/**")
                 .hasRole("AUTHOR")
                 .anyRequest()

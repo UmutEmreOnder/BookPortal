@@ -69,8 +69,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author findAuthorByUsername(String username) {
-        return authorRepository.findAuthorByUsername(username).orElseThrow(() -> new AuthorNotFoundException(username));
+    public AuthorDto findAuthorByUsername(String username) {
+        return authorMapper.mapTo(authorRepository.findAuthorByUsername(username).orElseThrow(() -> new AuthorNotFoundException(username)));
     }
 
     @Override

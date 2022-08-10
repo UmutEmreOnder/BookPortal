@@ -27,29 +27,29 @@ import java.util.List;
 public class AuthorController {
     private final AuthorService authorService;
 
-    @PostMapping("/create")
+    @PostMapping("/request")
     public Boolean addNewRequest(@RequestBody @Valid CreateNewRequest createNewRequest) {
         authorService.addNewRequest(createNewRequest);
         return Boolean.TRUE;
     }
 
-    @PutMapping("/update")
+    @PutMapping("/")
     public Boolean updateAuthor(@RequestBody @Valid CreateNewUser createNewAuthor) {
         authorService.updateAuthor(createNewAuthor);
         return Boolean.TRUE;
     }
 
-    @GetMapping("/get/books")
+    @GetMapping("/books")
     public List<BookDto> getAllBooks() {
         return authorService.getAllBooks();
     }
 
-    @GetMapping("/get/current-requests")
+    @GetMapping("/current-requests")
     public List<RequestDto> getAllRequests() {
         return authorService.getAllRequests();
     }
 
-    @GetMapping("/get/responded-requests")
+    @GetMapping("/responded-requests")
     public List<RespondedRequestDto> getAllRespondedRequests() {
         return authorService.getAllRespondedRequests();
     }

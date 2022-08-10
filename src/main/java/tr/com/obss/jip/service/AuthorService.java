@@ -15,7 +15,7 @@ public interface AuthorService {
 
     void createNewAuthor(CreateNewUser createNewAuthor);
 
-    Author findAuthorByUsername(String username);
+    AuthorDto findAuthorByUsername(String username);
 
     Author findAuthorById(Long id);
 

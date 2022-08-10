@@ -2,6 +2,7 @@ package tr.com.obss.jip.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,19 +28,19 @@ public class UserController {
     private final UserService userService;
     private final BookService bookService;
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public Boolean createNewUser(@RequestBody @Valid CreateNewUser createNewUser) {
         userService.createNewUser(createNewUser);
         return Boolean.TRUE;
     }
 
-    @PutMapping("/update")
+    @PutMapping("/")
     public Boolean updateUser(@RequestBody @Valid CreateNewUser createNewUser) {
         userService.updateUser(createNewUser);
         return Boolean.TRUE;
     }
 
-    @GetMapping("/book/all")
+    @GetMapping("/book")
     public List<BookDto> getAllBooks() {
         return bookService.getAllBooks();
     }
@@ -49,36 +50,36 @@ public class UserController {
         return bookService.findByName(name);
     }
 
-    @PostMapping("/book/read/add")
+    @PostMapping("/book/read")
     public Boolean addReadBook(@RequestParam("name") String name) {
         userService.addReadBook(name);
         return Boolean.TRUE;
     }
 
-    @PostMapping("/book/favorite/add")
+    @PostMapping("/book/favorite")
     public Boolean addFavoriteBook(@RequestParam("name") String name) {
         userService.addFavoriteBook(name);
         return Boolean.TRUE;
     }
 
-    @PostMapping("/book/read/delete")
+    @DeleteMapping("/book/read")
     public Boolean deleteReadBook(@RequestParam("name") String name) {
         userService.deleteReadBook(name);
         return Boolean.TRUE;
     }
 
-    @PostMapping("/book/favorite/delete")
+    @DeleteMapping("/book/favorite")
     public Boolean deleteFavoriteBook(@RequestParam("name") String name) {
         userService.deleteFavoriteBook(name);
         return Boolean.TRUE;
     }
 
-    @GetMapping("/book/read/all")
+    @GetMapping("/book/read")
     public List<BookDto> getReadBooks() {
         return userService.getReadBooks();
     }
 
-    @GetMapping("/book/favorite/all")
+    @GetMapping("/book/favorite")
     public List<BookDto> getFavoriteBooks() {
         return userService.getFavoriteBooks();
     }

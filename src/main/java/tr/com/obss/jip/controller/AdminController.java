@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.obss.jip.dto.AuthorDto;
+import tr.com.obss.jip.dto.BaseUserDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.UserDto;
@@ -46,6 +47,11 @@ public class AdminController {
     @GetMapping("/user/{username}")
     public UserDto findUserByUsername(@PathVariable("username") String username) {
         return userService.findByUsername(username);
+    }
+
+    @GetMapping("/baseuser/{username}")
+    public BaseUserDto findBaseUserByUsername(@PathVariable("username") String username) {
+        return baseUserService.findUserByUsername(username);
     }
 
     @DeleteMapping("/user")

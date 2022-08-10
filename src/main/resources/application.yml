@@ -10,10 +10,11 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: false
     properties:
       hibernate:
         show_sql: true
         format_sql: true
         enable_lazy_load_no_trans: true
+    open-in-view: false

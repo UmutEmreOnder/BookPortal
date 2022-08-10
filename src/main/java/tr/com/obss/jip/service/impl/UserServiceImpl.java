@@ -89,39 +89,45 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addReadBook(String name) {
         User user = getAuthenticatedUser();
-        addBookToList(name, user.getReadList());
+
+        Book book = bookRepository.findBookByName(name).orElseThrow(() -> new BookNotFoundException(name));
+        book.setReadCounter(book.getReadCounter() + 1);
+        user.getReadList().add(book);
+
         userRepository.save(user);
     }
 
     @Override
     public void addFavoriteBook(String name) {
         User user = getAuthenticatedUser();
-        addBookToList(name, user.getFavoriteList());
-        userRepository.save(user);
-    }
 
-    private void addBookToList(String bookName, List<Book> list) {
-        Book book = bookRepository.findBookByName(bookName).orElseThrow(() -> new BookNotFoundException(bookName));
-        list.add(book);
+        Book book = bookRepository.findBookByName(name).orElseThrow(() -> new BookNotFoundException(name));
+        book.setFavoriteCounter(book.getFavoriteCounter() + 1);
+        user.getFavoriteList().add(book);
+
+        userRepository.save(user);
     }
 
     @Override
     public void deleteReadBook(String name) {
         User user = getAuthenticatedUser();
-        deleteBookFromList(name, user.getReadList());
+
+        Book book = bookRepository.findBookByName(name).orElseThrow(() -> new BookNotFoundException(name));
+        book.setReadCounter(book.getReadCounter() - 1);
+        user.getReadList().remove(book);
+
         userRepository.save(user);
     }
 
     @Override
     public void deleteFavoriteBook(String name) {
         User user = getAuthenticatedUser();
-        deleteBookFromList(name, user.getFavoriteList());
-        userRepository.save(user);
-    }
 
-    private void deleteBookFromList(String bookName, List<Book> list) {
-        Book book = bookRepository.findBookByName(bookName).orElseThrow(() -> new BookNotFoundException(bookName));
-        list.remove(book);
+        Book book = bookRepository.findBookByName(name).orElseThrow(() -> new BookNotFoundException(name));
+        book.setFavoriteCounter(book.getFavoriteCounter() - 1);
+        user.getFavoriteList().remove(book);
+
+        userRepository.save(user);
     }
 
     @Override

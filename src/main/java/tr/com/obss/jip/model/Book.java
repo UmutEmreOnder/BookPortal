@@ -37,6 +37,10 @@ public class Book {
     @ManyToOne
     private Author author;
 
+    private int readCounter;
+
+    private int favoriteCounter;
+
     @NotNBE
     private Date createDate;
 

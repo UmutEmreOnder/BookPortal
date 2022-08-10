@@ -30,6 +30,10 @@ public class BookDto {
     @NotNBE
     private String isbn;
 
+    private int readCounter;
+
+    private int favoriteCounter;
+
     @ManyToOne
     private AuthorDto author;
 

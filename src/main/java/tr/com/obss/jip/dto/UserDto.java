@@ -10,6 +10,7 @@ import tr.com.obss.jip.annotations.NotNBE;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Role;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -59,9 +60,10 @@ public class UserDto {
     @ManyToMany
     private List<Role> roles;
 
-    @OneToMany
+    @ManyToMany
     private List<Book> readList;
 
-    @OneToMany
+
+    @ManyToMany
     private List<Book> favoriteList;
 }

@@ -14,9 +14,7 @@ import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.GenreService;
 import tr.com.obss.jip.service.RoleService;
-import tr.com.obss.jip.service.UserService;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;

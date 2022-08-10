@@ -10,6 +10,7 @@ public interface GenreService {
     List<Genre> getAllGenres();
 
     Genre findByName(GenreType type);
+
     Genre findByName(String name);
 
     void createNewGenre(Genre genre);

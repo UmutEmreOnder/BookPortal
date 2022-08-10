@@ -11,7 +11,6 @@ import tr.com.obss.jip.dto.BaseUserDto;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.BaseUserMapper;
 import tr.com.obss.jip.model.BaseUser;
-import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.BaseUserRepository;
 import tr.com.obss.jip.service.BaseUserService;
 

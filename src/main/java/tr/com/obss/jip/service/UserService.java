@@ -4,7 +4,6 @@ import tr.com.obss.jip.dto.BaseUserDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
-import tr.com.obss.jip.model.User;
 
 import java.util.List;
 
@@ -30,6 +29,7 @@ public interface UserService {
     List<BookDto> getReadBooks();
 
     void updateUser(Long id, CreateNewUser createNewUser);
+
     void updateUser(CreateNewUser createNewUser);
 
     BaseUserDto getUser();

@@ -43,6 +43,7 @@ public class RequestServiceImpl implements RequestService {
 
         authorRepository.save(author);
     }
+
     @Override
     public List<RequestDto> getAllRequests() {
         Iterable<AddingBookRequest> requests = requestRepository.findAll();

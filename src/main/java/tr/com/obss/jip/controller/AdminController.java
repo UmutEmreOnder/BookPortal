@@ -17,7 +17,6 @@ import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
 import tr.com.obss.jip.dto.create.CreateNewUser;
-import tr.com.obss.jip.mapper.UserMapper;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.BookService;

@@ -18,6 +18,7 @@ public interface UserMapper {
     User mapTo(CreateNewUser createNewUserRequest);
 
     User mapTo(Author author);
+
     BaseUserDto mapUserToBase(User user);
 
     User mapBaseToUser(BaseUser user);

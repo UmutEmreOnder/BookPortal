@@ -11,21 +11,17 @@ import tr.com.obss.jip.dto.BaseUserDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
-import tr.com.obss.jip.exception.AuthorNotFoundException;
 import tr.com.obss.jip.exception.BookNotFoundException;
 import tr.com.obss.jip.exception.UserAlreadyExistException;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.UserMapper;
-import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.BookRepository;
 import tr.com.obss.jip.repository.UserRepository;
-import tr.com.obss.jip.service.AuthorService;
-import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RoleService;
 import tr.com.obss.jip.service.UserService;
 
@@ -42,7 +38,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
-
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;

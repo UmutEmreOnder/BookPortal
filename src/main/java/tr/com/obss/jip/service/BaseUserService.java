@@ -11,4 +11,6 @@ public interface BaseUserService {
     BaseUserDto findUserByUsername(String username);
 
     void deleteUser(long id);
+
+    BaseUserDto getUser();
 }

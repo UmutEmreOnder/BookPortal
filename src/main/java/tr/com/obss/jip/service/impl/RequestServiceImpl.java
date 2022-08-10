@@ -84,7 +84,6 @@ public class RequestServiceImpl implements RequestService {
     private void removeRequestAndCreateRespond(Author author, AddingBookRequest addingBookRequest, RespondType type) {
         author.getAddingBookRequests().remove(addingBookRequest);
         authorRepository.save(author);
-        requestRepository.delete(addingBookRequest);
 
         respondedRequestService.create(addingBookRequest, author, type);
     }

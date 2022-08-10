@@ -40,6 +40,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/user/")
                 .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/user/")
+                .hasAnyRole("USER", "AUTHOR", "ADMIN")
                 .antMatchers("/api/user/**")
                 .hasRole("USER")
                 .antMatchers("/api/admin/**")

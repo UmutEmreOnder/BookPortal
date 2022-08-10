@@ -1,5 +1,6 @@
 package tr.com.obss.jip.service;
 
+import tr.com.obss.jip.dto.BaseUserDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
@@ -30,4 +31,6 @@ public interface UserService {
 
     void updateUser(Long id, CreateNewUser createNewUser);
     void updateUser(CreateNewUser createNewUser);
+
+    BaseUserDto getUser();
 }

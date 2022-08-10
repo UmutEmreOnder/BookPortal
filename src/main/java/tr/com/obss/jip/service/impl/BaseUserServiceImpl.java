@@ -2,12 +2,16 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.BaseUserDto;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.BaseUserMapper;
 import tr.com.obss.jip.model.BaseUser;
+import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.BaseUserRepository;
 import tr.com.obss.jip.service.BaseUserService;
 
@@ -38,5 +42,21 @@ public class BaseUserServiceImpl implements BaseUserService {
     @Override
     public void deleteUser(long id) {
         baseUserRepository.deleteById(id);
+    }
+
+    @Override
+    public BaseUserDto getUser() {
+        return baseUserMapper.mapTo(getAuthenticatedUser());
+    }
+
+    private BaseUser getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            return baseUserRepository.findUserByUsername(currentUserName).orElseThrow(UserNotFoundException::new);
+        }
+
+        return null;
     }
 }

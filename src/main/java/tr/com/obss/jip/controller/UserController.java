@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tr.com.obss.jip.dto.BaseUserDto;
 import tr.com.obss.jip.dto.BookDto;
+import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
+import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.UserService;
 
@@ -27,6 +30,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final BookService bookService;
+    private final BaseUserService baseUserService;
 
     @PostMapping("/")
     public Boolean createNewUser(@RequestBody @Valid CreateNewUser createNewUser) {
@@ -38,6 +42,11 @@ public class UserController {
     public Boolean updateUser(@RequestBody @Valid CreateNewUser createNewUser) {
         userService.updateUser(createNewUser);
         return Boolean.TRUE;
+    }
+
+    @GetMapping("/")
+    public BaseUserDto getUser() {
+        return baseUserService.getUser();
     }
 
     @GetMapping("/book")

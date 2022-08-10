@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tr.com.obss.jip.dto.BaseUserDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
@@ -160,6 +161,11 @@ public class UserServiceImpl implements UserService {
         transferFields(user, authenticatedUser, authenticatedUser.getId());
 
         userRepository.save(user);
+    }
+
+    @Override
+    public BaseUserDto getUser() {
+        return userMapper.mapUserToBase(getAuthenticatedUser());
     }
 
     private void transferFields(User user, User userExists, Long id) {

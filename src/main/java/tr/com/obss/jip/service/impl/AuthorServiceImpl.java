@@ -122,6 +122,11 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.save(author);
     }
 
+    @Override
+    public void deleteAuthorById(Long id) {
+        authorRepository.deleteById(id);
+    }
+
     private void transferFields(Author author, Author authorExist, Long id) {
         author.setId(id);
         author.setRoles(authorExist.getRoles());

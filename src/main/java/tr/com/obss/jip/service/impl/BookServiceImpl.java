@@ -12,6 +12,7 @@ import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Genre;
 import tr.com.obss.jip.model.User;
+import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BookRepository;
 import tr.com.obss.jip.repository.UserRepository;
 import tr.com.obss.jip.service.BookService;
@@ -30,6 +31,7 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final UserRepository userRepository;
     private final GenreService genreService;
+    private final AuthorRepository authorRepository;
 
     @Override
     public List<BookDto> getAllBooks() {
@@ -82,14 +84,14 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
         Author author = book.getAuthor();
 
-        if (author != null) {
-            author.getBooks().remove(book);
-        }
-
         for (User user : userRepository.findAll()) {
             user.getReadList().remove(book);
             user.getFavoriteList().remove(book);
             userRepository.save(user);
+        }
+
+        if (author != null) {
+            author.getBooks().remove(book);
         }
 
         bookRepository.delete(book);

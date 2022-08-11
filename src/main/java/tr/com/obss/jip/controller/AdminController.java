@@ -89,6 +89,12 @@ public class AdminController {
         return authorService.findAuthorByUsername(username);
     }
 
+    @DeleteMapping("/author")
+    public Boolean deleteAuthor(@RequestParam("id") Long id) {
+        authorService.deleteAuthorById(id);
+        return Boolean.TRUE;
+    }
+
 
     // AddingBookRequest Part
     @GetMapping("/request")

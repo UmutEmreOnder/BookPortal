@@ -32,7 +32,6 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final UserRepository userRepository;
     private final GenreService genreService;
-    private final AuthorRepository authorRepository;
 
     @Override
     public List<BookDto> getAllBooks() {
@@ -98,5 +97,15 @@ public class BookServiceImpl implements BookService {
         }
 
         bookRepository.delete(book);
+    }
+
+    @Override
+    public List<BookDto> findByNameContains(String keyword) {
+        final Iterable<Book> books = bookRepository.findBooksByNameContains(keyword);
+
+        List<BookDto> retList = new ArrayList<>();
+        books.forEach(book -> retList.add(bookMapper.mapTo(book)));
+
+        return retList;
     }
 }

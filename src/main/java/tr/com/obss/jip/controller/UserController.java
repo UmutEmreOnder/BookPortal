@@ -53,7 +53,12 @@ public class UserController {
         return bookService.getAllBooks();
     }
 
-    @GetMapping("/book/{name}")
+    @GetMapping("/book/like/{keyword}")
+    public List<BookDto> findBooksByKeyword(@PathVariable("keyword") String keyword) {
+        return bookService.findByNameContains(keyword);
+    }
+
+    @GetMapping("/foo/{name}")
     public BookDto findBookByName(@PathVariable("name") String name) {
         return bookService.findByName(name);
     }

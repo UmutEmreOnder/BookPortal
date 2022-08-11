@@ -15,4 +15,6 @@ public interface BookService {
     void updateBook(Long id, CreateNewBook createNewBookRequest);
 
     void deleteBook(Long id);
+
+    List<BookDto> findByNameContains(String keyword);
 }

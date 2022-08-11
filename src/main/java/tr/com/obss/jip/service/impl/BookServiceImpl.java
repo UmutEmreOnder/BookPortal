@@ -13,7 +13,6 @@ import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Genre;
 import tr.com.obss.jip.model.GenreType;
 import tr.com.obss.jip.model.User;
-import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BookRepository;
 import tr.com.obss.jip.repository.UserRepository;
 import tr.com.obss.jip.service.BookService;

@@ -12,8 +12,6 @@ public interface UserService {
 
     void createNewUser(CreateNewUser createNewUserRequest);
 
-    UserDto findByName(String name);
-
     UserDto findByUsername(String username);
 
     void addReadBook(String name);

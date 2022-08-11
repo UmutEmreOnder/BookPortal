@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.BaseUserDto;
-import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.BaseUserMapper;
 import tr.com.obss.jip.model.BaseUser;

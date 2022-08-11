@@ -58,11 +58,6 @@ public class UserController {
         return bookService.findByNameContains(keyword);
     }
 
-    @GetMapping("/foo/{name}")
-    public BookDto findBookByName(@PathVariable("name") String name) {
-        return bookService.findByName(name);
-    }
-
     @PostMapping("/book/read")
     public Boolean addReadBook(@RequestParam("name") String name) {
         userService.addReadBook(name);

@@ -6,7 +6,6 @@ import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.RespondedRequestDto;
 import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.dto.create.CreateNewUser;
-import tr.com.obss.jip.model.Author;
 
 import java.util.List;
 
@@ -14,10 +13,6 @@ public interface AuthorService {
     void addNewRequest(CreateNewRequest createNewRequest);
 
     void createNewAuthor(CreateNewUser createNewAuthor);
-
-    AuthorDto findAuthorByUsername(String username);
-
-    Author findAuthorById(Long id);
 
     List<RequestDto> getAllRequests();
 

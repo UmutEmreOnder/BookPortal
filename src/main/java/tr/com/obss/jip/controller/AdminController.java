@@ -90,13 +90,8 @@ public class AdminController {
     }
 
     @GetMapping("/author/like/{keyword}")
-    public List<AuthorDto> getAllAuthors(@PathVariable("keyword") String keyword) {
+    public List<AuthorDto> getAllAuthorsContains(@PathVariable("keyword") String keyword) {
         return authorService.getAllAuthorsContains(keyword);
-    }
-
-    @GetMapping("/author/{username}")
-    public AuthorDto getAuthor(@PathVariable("username") String username) {
-        return authorService.findAuthorByUsername(username);
     }
 
     @DeleteMapping("/author")

@@ -75,12 +75,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findByName(String name) {
-        final User user = userRepository.findUserByName(name).orElseThrow(() -> new UserNotFoundException(name));
-        return userMapper.mapTo(user);
-    }
-
-    @Override
     public UserDto findByUsername(String username) {
         return userMapper.mapTo(userRepository.findUserByUsername(username).orElseThrow(() -> new UserNotFoundException(String.format("%s is not found", username))));
     }

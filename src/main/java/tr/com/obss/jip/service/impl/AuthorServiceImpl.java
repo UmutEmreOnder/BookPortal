@@ -11,7 +11,6 @@ import tr.com.obss.jip.dto.AuthorDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.RespondedRequestDto;
-import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.exception.AuthorAlreadyExistException;
@@ -23,14 +22,11 @@ import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.mapper.RespondedRequestMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.BaseUser;
-import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
-import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BaseUserRepository;
 import tr.com.obss.jip.service.AuthorService;
-import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RoleService;
 
@@ -53,7 +49,6 @@ public class AuthorServiceImpl implements AuthorService {
     private final RespondedRequestMapper respondedRequestMapper;
     private final RequestService requestService;
     private final BaseUserRepository baseUserRepository;
-    private final BookService bookService;
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest) {
@@ -76,16 +71,6 @@ public class AuthorServiceImpl implements AuthorService {
         author.setRoles(List.of(standardRole));
 
         authorRepository.save(author);
-    }
-
-    @Override
-    public AuthorDto findAuthorByUsername(String username) {
-        return authorMapper.mapTo(authorRepository.findAuthorByUsername(username).orElseThrow(() -> new AuthorNotFoundException(username)));
-    }
-
-    @Override
-    public Author findAuthorById(Long id) {
-        return authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
     }
 
     @Override

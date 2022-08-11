@@ -1,7 +1,6 @@
 package tr.com.obss.jip.service;
 
 import tr.com.obss.jip.dto.BaseUserDto;
-import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.model.BaseUser;
 
 public interface BaseUserService {

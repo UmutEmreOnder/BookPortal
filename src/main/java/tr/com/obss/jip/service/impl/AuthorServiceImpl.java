@@ -15,14 +15,18 @@ import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.exception.AuthorAlreadyExistException;
 import tr.com.obss.jip.exception.AuthorNotFoundException;
+import tr.com.obss.jip.exception.UserAlreadyExistException;
 import tr.com.obss.jip.mapper.AuthorMapper;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.mapper.RespondedRequestMapper;
 import tr.com.obss.jip.model.Author;
+import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
+import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.AuthorRepository;
+import tr.com.obss.jip.repository.BaseUserRepository;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RoleService;
@@ -44,6 +48,8 @@ public class AuthorServiceImpl implements AuthorService {
     private final BookMapper bookMapper;
     private final RespondedRequestMapper respondedRequestMapper;
     private final RequestService requestService;
+
+    private final BaseUserRepository baseUserRepository;
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest) {
@@ -107,19 +113,21 @@ public class AuthorServiceImpl implements AuthorService {
     public void updateAuthor(Long id, CreateNewUser createNewAuthor) {
         final Author authorExist = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
 
+        isUnameEmailUnique(createNewAuthor, authorExist);
+
         Author author = authorMapper.mapTo(createNewAuthor);
         transferFields(author, authorExist, id);
 
         authorRepository.save(author);
     }
 
-    @Override
-    public void updateAuthor(CreateNewUser createNewAuthor) {
-        final Author authenticatedAuthor = getAuthenticatedAuthor();
+    private void isUnameEmailUnique(CreateNewUser createNewUser, Author authorExist) {
+        final Optional<BaseUser> existUser1 = authorExist.getUsername().equals(createNewUser.getUsername()) ? Optional.empty() : baseUserRepository.findUserByUsername(createNewUser.getUsername());
+        final Optional<BaseUser> existUser2 = authorExist.getEmail().equals(createNewUser.getEmail()) ? Optional.empty() : baseUserRepository.findUserByEmail(createNewUser.getEmail());
 
-        Author author = authorMapper.mapTo(createNewAuthor);
-        transferFields(author, authenticatedAuthor, authenticatedAuthor.getId());
-        authorRepository.save(author);
+        if (existUser1.isPresent() || existUser2.isPresent()) {
+            throw new UserAlreadyExistException(createNewUser.getUsername());
+        }
     }
 
     @Override

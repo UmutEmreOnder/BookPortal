@@ -61,7 +61,7 @@ public class AdminController {
 
     @PutMapping("/user")
     public Boolean updateUser(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewUser) {
-        userService.updateUser(id, createNewUser);
+        userService.updateUserById(createNewUser, id);
         return Boolean.TRUE;
     }
 

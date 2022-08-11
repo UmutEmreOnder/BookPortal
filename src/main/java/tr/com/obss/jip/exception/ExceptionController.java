@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ExceptionController {
 
     @ExceptionHandler(BaseException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.PAYMENT_REQUIRED)
     public ErrorDto handleException(BaseException ex, HttpServletRequest request) {
         return new ErrorDto(ex.getMessage(), 1000L, request.getRequestURL().toString());
     }

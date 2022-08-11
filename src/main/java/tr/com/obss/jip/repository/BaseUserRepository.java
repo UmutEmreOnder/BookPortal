@@ -13,4 +13,6 @@ public interface BaseUserRepository extends CrudRepository<BaseUser, Long> {
 
     Optional<BaseUser> findUserByName(String name);
     Optional<BaseUser> findBaseUserByUsernameAndPassword(String username, String password);
+
+    Optional<BaseUser> findUserByEmail(String email);
 }

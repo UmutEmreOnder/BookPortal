@@ -29,7 +29,5 @@ public interface AuthorService {
 
     void updateAuthor(Long id, CreateNewUser createNewAuthor);
 
-    void updateAuthor(CreateNewUser createNewAuthor);
-
     void deleteAuthorById(Long id);
 }

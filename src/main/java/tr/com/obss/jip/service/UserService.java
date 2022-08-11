@@ -28,10 +28,6 @@ public interface UserService {
 
     List<BookDto> getReadBooks();
 
-    void updateUser(Long id, CreateNewUser createNewUser);
-
-    void updateUser(CreateNewUser createNewUser);
-
     BaseUserDto getUser();
 
     void updateUserById(CreateNewUser createNewUser, Long id);

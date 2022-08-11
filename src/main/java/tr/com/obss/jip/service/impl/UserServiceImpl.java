@@ -16,10 +16,12 @@ import tr.com.obss.jip.exception.UserAlreadyExistException;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.UserMapper;
+import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.model.User;
+import tr.com.obss.jip.repository.BaseUserRepository;
 import tr.com.obss.jip.repository.BookRepository;
 import tr.com.obss.jip.repository.UserRepository;
 import tr.com.obss.jip.service.RoleService;
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
+    private final BaseUserRepository baseUserRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
@@ -139,26 +142,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, CreateNewUser createNewUser) {
-        final User userExists = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-
-        User user = userMapper.mapTo(createNewUser);
-        transferFields(user, userExists, id);
-
-        userRepository.save(user);
-    }
-
-    @Override
-    public void updateUser(CreateNewUser createNewUser) {
-        final User authenticatedUser = getAuthenticatedUser();
-
-        User user = userMapper.mapTo(createNewUser);
-        transferFields(user, authenticatedUser, authenticatedUser.getId());
-
-        userRepository.save(user);
-    }
-
-    @Override
     public BaseUserDto getUser() {
         return userMapper.mapUserToBase(getAuthenticatedUser());
     }
@@ -167,10 +150,21 @@ public class UserServiceImpl implements UserService {
     public void updateUserById(CreateNewUser createNewUser, Long id) {
         final User userExist = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
+        isUnameEmailUnique(createNewUser, userExist);
+
         User user = userMapper.mapTo(createNewUser);
         transferFields(user, userExist, id);
 
         userRepository.save(user);
+    }
+
+    private void isUnameEmailUnique(CreateNewUser createNewUser, User userExist) {
+        final Optional<BaseUser> existUser1 = userExist.getUsername().equals(createNewUser.getUsername()) ? Optional.empty() : baseUserRepository.findUserByUsername(createNewUser.getUsername());
+        final Optional<BaseUser> existUser2 = userExist.getEmail().equals(createNewUser.getEmail()) ? Optional.empty() : baseUserRepository.findUserByEmail(createNewUser.getEmail());
+
+        if (existUser1.isPresent() || existUser2.isPresent()) {
+            throw new UserAlreadyExistException(createNewUser.getUsername());
+        }
     }
 
     private void transferFields(User user, User userExists, Long id) {

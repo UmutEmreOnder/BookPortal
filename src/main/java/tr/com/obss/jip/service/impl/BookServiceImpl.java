@@ -11,6 +11,7 @@ import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Genre;
+import tr.com.obss.jip.model.GenreType;
 import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BookRepository;
@@ -70,10 +71,12 @@ public class BookServiceImpl implements BookService {
     public void updateBook(Long id, CreateNewBook createNewBook) {
         final Book bookExist = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
 
+        Genre genre = genreService.findByName(GenreType.valueOf(createNewBook.getGenreName()));
+
         Book book = bookMapper.mapTo(createNewBook);
         book.setId(id);
         book.setAuthor(bookExist.getAuthor());
-        book.setGenre(bookExist.getGenre());
+        book.setGenre(genre);
         book.setCreateDate(bookExist.getCreateDate());
 
         bookRepository.save(book);

@@ -31,4 +31,6 @@ public interface UserService {
     BaseUserDto getUser();
 
     void updateUserById(CreateNewUser createNewUser, Long id);
+
+    List<UserDto> getAllContainsUsers(String keyword);
 }

@@ -32,4 +32,6 @@ public interface AuthorService {
     void deleteAuthorById(Long id);
 
     List<BookDto> findByNameContains(String keyword);
+
+    List<AuthorDto> getAllAuthorsContains(String keyword);
 }

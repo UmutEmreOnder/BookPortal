@@ -43,6 +43,11 @@ public class AdminController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/user/like/{keyword}")
+    public List<UserDto> getAllContainsUsers(@PathVariable("keyword") String keyword) {
+        return userService.getAllContainsUsers(keyword);
+    }
+
     @GetMapping("/user/{username}")
     public UserDto findUserByUsername(@PathVariable("username") String username) {
         return userService.findByUsername(username);
@@ -82,6 +87,11 @@ public class AdminController {
     @GetMapping("/author")
     public List<AuthorDto> getAllAuthors() {
         return authorService.getAllAuthors();
+    }
+
+    @GetMapping("/author/like/{keyword}")
+    public List<AuthorDto> getAllAuthors(@PathVariable("keyword") String keyword) {
+        return authorService.getAllAuthorsContains(keyword);
     }
 
     @GetMapping("/author/{username}")

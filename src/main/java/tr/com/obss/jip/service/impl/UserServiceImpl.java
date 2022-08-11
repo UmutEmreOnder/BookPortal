@@ -158,6 +158,16 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public List<UserDto> getAllContainsUsers(String keyword) {
+        final Iterable<User> allUsers = userRepository.findUserByNameContains(keyword);
+
+        List<UserDto> retList = new ArrayList<>();
+        allUsers.forEach(user -> retList.add(userMapper.mapTo(user)));
+
+        return retList;
+    }
+
     private void isUnameEmailUnique(CreateNewUser createNewUser, User userExist) {
         final Optional<BaseUser> existUser1 = userExist.getUsername().equals(createNewUser.getUsername()) ? Optional.empty() : baseUserRepository.findUserByUsername(createNewUser.getUsername());
         final Optional<BaseUser> existUser2 = userExist.getEmail().equals(createNewUser.getEmail()) ? Optional.empty() : baseUserRepository.findUserByEmail(createNewUser.getEmail());

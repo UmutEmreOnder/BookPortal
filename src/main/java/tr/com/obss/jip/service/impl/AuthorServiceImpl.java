@@ -11,6 +11,7 @@ import tr.com.obss.jip.dto.AuthorDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.RespondedRequestDto;
+import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewRequest;
 import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.exception.AuthorAlreadyExistException;
@@ -25,6 +26,7 @@ import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
+import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BaseUserRepository;
 import tr.com.obss.jip.service.AuthorService;
@@ -35,6 +37,7 @@ import tr.com.obss.jip.service.RoleService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -138,7 +141,17 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<BookDto> findByNameContains(String keyword) {
-        return bookService.findByNameContains(keyword);
+        return Objects.requireNonNull(getAuthenticatedAuthor()).getBooks().stream().filter(book -> book.getName().contains(keyword)).map(bookMapper::mapTo).toList();
+    }
+
+    @Override
+    public List<AuthorDto> getAllAuthorsContains(String keyword) {
+        final Iterable<Author> allUsers = authorRepository.findAuthorsByNameContains(keyword);
+
+        List<AuthorDto> retList = new ArrayList<>();
+        allUsers.forEach(author -> retList.add(authorMapper.mapTo(author)));
+
+        return retList;
     }
 
     private void transferFields(Author author, Author authorExist, Long id) {

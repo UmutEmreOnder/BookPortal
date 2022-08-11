@@ -33,4 +33,6 @@ public interface UserService {
     void updateUser(CreateNewUser createNewUser);
 
     BaseUserDto getUser();
+
+    void updateUserById(CreateNewUser createNewUser, Long id);
 }

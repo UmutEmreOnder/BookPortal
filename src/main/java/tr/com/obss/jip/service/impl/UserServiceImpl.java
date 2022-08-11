@@ -163,11 +163,21 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapUserToBase(getAuthenticatedUser());
     }
 
+    @Override
+    public void updateUserById(CreateNewUser createNewUser, Long id) {
+        final User userExist = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        User user = userMapper.mapTo(createNewUser);
+        transferFields(user, userExist, id);
+
+        userRepository.save(user);
+    }
+
     private void transferFields(User user, User userExists, Long id) {
         user.setId(id);
         user.setRoles(userExists.getRoles());
         user.setCreateDate(userExists.getCreateDate());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(userExists.getPassword());
         user.setReadList(userExists.getReadList());
         user.setFavoriteList(userExists.getFavoriteList());
     }

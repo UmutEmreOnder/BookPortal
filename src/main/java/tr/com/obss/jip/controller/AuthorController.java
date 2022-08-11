@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.RequestDto;
@@ -33,8 +34,8 @@ public class AuthorController {
     }
 
     @PutMapping("/")
-    public Boolean updateAuthor(@RequestBody @Valid CreateNewUser createNewAuthor) {
-        authorService.updateAuthor(createNewAuthor);
+    public Boolean updateAuthor(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewAuthor) {
+        authorService.updateAuthor(id, createNewAuthor);
         return Boolean.TRUE;
     }
 

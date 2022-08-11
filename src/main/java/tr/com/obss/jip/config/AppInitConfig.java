@@ -58,7 +58,7 @@ public class AppInitConfig {
                         .username("sys.admin")
                         .password("admin")
                         .createDate(new Date())
-                        .roles(List.of(roleService.findByName(RoleType.ROLE_ADMIN)))
+                        .roles(List.of(roleService.findByName(RoleType.ROLE_ADMIN), roleService.findByName(RoleType.ROLE_USER), roleService.findByName(RoleType.ROLE_AUTHOR)))
                         .build();
 
                 baseUserService.createUser(adminUser);

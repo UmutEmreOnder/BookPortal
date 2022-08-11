@@ -134,7 +134,7 @@ public class AuthorServiceImpl implements AuthorService {
         author.setBooks(authorExist.getBooks());
         author.setAddingBookRequests(authorExist.getAddingBookRequests());
         author.setRespondedBookRequests(authorExist.getRespondedBookRequests());
-        author.setPassword(passwordEncoder.encode(author.getPassword()));
+        author.setPassword(authorExist.getPassword());
     }
 
     private Author getAuthenticatedAuthor() {

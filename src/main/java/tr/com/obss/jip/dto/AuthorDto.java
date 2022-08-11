@@ -32,7 +32,13 @@ public class AuthorDto {
     private String surname;
 
     @NotNBE
+    private Integer age;
+
+    @NotNBE
     private String email;
+
+    @NotNBE
+    private String username;
 
     @ManyToMany
     private List<Role> roles;

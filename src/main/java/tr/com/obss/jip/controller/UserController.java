@@ -38,8 +38,8 @@ public class UserController {
     }
 
     @PutMapping("/")
-    public Boolean updateUser(@RequestBody @Valid CreateNewUser createNewUser) {
-        userService.updateUser(createNewUser);
+    public Boolean updateUser(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewUser) {
+        userService.updateUserById(createNewUser, id);
         return Boolean.TRUE;
     }
 

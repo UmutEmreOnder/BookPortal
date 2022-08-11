@@ -35,7 +35,6 @@ public class CreateNewUser {
     @NotNBE
     private String username;
 
-    @NotNBE
     @Size(min = 3, max = 20)
     private String password;
 }

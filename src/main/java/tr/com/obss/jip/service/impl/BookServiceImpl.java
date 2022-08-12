@@ -76,6 +76,8 @@ public class BookServiceImpl implements BookService {
         book.setAuthor(bookExist.getAuthor());
         book.setGenre(genre);
         book.setCreateDate(bookExist.getCreateDate());
+        book.setFavoriteCounter(bookExist.getFavoriteCounter());
+        book.setReadCounter(bookExist.getReadCounter());
 
         bookRepository.save(book);
     }

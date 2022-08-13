@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public BaseUserDto getUser() {
+    public <T> T getUser() {
         return baseUserService.getUser();
     }
 

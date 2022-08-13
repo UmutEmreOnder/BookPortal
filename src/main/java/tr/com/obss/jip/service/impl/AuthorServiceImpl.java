@@ -139,6 +139,11 @@ public class AuthorServiceImpl implements AuthorService {
         return retList;
     }
 
+    @Override
+    public AuthorDto findByUsername(String username) {
+        return authorMapper.mapTo(authorRepository.findAuthorByUsername(username).orElseThrow(() -> new AuthorNotFoundException(username)));
+    }
+
     private void transferFields(Author author, Author authorExist, Long id) {
         author.setId(id);
         author.setRoles(authorExist.getRoles());

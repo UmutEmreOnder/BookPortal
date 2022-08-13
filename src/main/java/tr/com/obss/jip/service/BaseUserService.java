@@ -10,7 +10,7 @@ public interface BaseUserService {
 
     void deleteUser(long id);
 
-    BaseUserDto getUser();
+    <T> T getUser();
 
     BaseUserDto findUserByUsernameAndPassword(String username, String password);
 

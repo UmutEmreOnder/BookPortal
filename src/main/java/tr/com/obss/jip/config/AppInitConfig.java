@@ -6,11 +6,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tr.com.obss.jip.exception.UserNotFoundException;
+import tr.com.obss.jip.model.Admin;
 import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Genre;
 import tr.com.obss.jip.model.GenreType;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
+import tr.com.obss.jip.service.AdminService;
 import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.GenreService;
 import tr.com.obss.jip.service.RoleService;
@@ -25,7 +27,7 @@ import java.util.List;
 public class AppInitConfig {
     private final RoleService roleService;
     private final GenreService genreService;
-    private final BaseUserService baseUserService;
+    private final AdminService adminService;
 
     @Bean
     public CommandLineRunner initRoles() {
@@ -47,9 +49,9 @@ public class AppInitConfig {
             });
 
             try {
-                baseUserService.getUserByUsername("sys.admin");
+                adminService.getUserByUsername("sys.admin");
             } catch (UserNotFoundException userNotFoundException) {
-                BaseUser adminUser = BaseUser
+                Admin adminUser = Admin
                         .builder()
                         .name("System")
                         .surname("Admin")
@@ -61,7 +63,7 @@ public class AppInitConfig {
                         .roles(List.of(roleService.findByName(RoleType.ROLE_ADMIN), roleService.findByName(RoleType.ROLE_USER), roleService.findByName(RoleType.ROLE_AUTHOR)))
                         .build();
 
-                baseUserService.createUser(adminUser);
+                adminService.createUser(adminUser);
             }
         };
     }

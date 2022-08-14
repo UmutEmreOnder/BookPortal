@@ -105,9 +105,9 @@ public class AuthorServiceImpl implements AuthorService {
         isUnameEmailUnique(createNewAuthor, authorExist);
 
         Author author = authorMapper.mapTo(createNewAuthor);
-        transferFields(author, authorExist, id);
+        transferFields(author, authorExist);
 
-        authorRepository.save(author);
+        authorRepository.save(authorExist);
     }
 
     private void isUnameEmailUnique(CreateNewUser createNewUser, Author authorExist) {
@@ -144,14 +144,12 @@ public class AuthorServiceImpl implements AuthorService {
         return authorMapper.mapTo(authorRepository.findAuthorByUsername(username).orElseThrow(() -> new AuthorNotFoundException(username)));
     }
 
-    private void transferFields(Author author, Author authorExist, Long id) {
-        author.setId(id);
-        author.setRoles(authorExist.getRoles());
-        author.setCreateDate(authorExist.getCreateDate());
-        author.setBooks(authorExist.getBooks());
-        author.setAddingBookRequests(authorExist.getAddingBookRequests());
-        author.setRespondedBookRequests(authorExist.getRespondedBookRequests());
-        author.setPassword(authorExist.getPassword());
+    private void transferFields(Author author, Author authorExist) {
+        authorExist.setName(author.getName());
+        authorExist.setSurname(author.getSurname());
+        authorExist.setEmail(author.getEmail());
+        authorExist.setAge(author.getAge());
+        authorExist.setUsername(author.getUsername());
     }
 
     private Author getAuthenticatedAuthor() {

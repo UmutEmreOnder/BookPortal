@@ -145,11 +145,9 @@ public class UserServiceImpl implements UserService {
         final User userExist = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
         isUnameEmailUnique(createNewUser, userExist);
+        transferFields(createNewUser, userExist);
 
-        User user = userMapper.mapTo(createNewUser);
-        transferFields(user, userExist, id);
-
-        userRepository.save(user);
+        userRepository.save(userExist);
     }
 
     @Override
@@ -171,13 +169,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void transferFields(User user, User userExists, Long id) {
-        user.setId(id);
-        user.setRoles(userExists.getRoles());
-        user.setCreateDate(userExists.getCreateDate());
-        user.setPassword(userExists.getPassword());
-        user.setReadList(userExists.getReadList());
-        user.setFavoriteList(userExists.getFavoriteList());
+    private void transferFields(CreateNewUser user, User userExists) {
+        userExists.setName(user.getName());
+        userExists.setSurname(user.getSurname());
+        userExists.setEmail(user.getEmail());
+        userExists.setAge(user.getAge());
+        userExists.setUsername(user.getUsername());
     }
 
     private User getAuthenticatedUser() {

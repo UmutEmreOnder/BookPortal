@@ -14,6 +14,7 @@ import tr.com.obss.jip.service.SecureTokenService;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class SecureTokenServiceImpl implements SecureTokenService {
 
     @Override
     public SecureToken createSecureToken() {
-        String tokenValue = new String(Base64.encodeBase64URLSafe(DEFAULT_TOKEN_GENERATOR.generateKey()), US_ASCII); // this is a sample, you can adapt as per your security need
+        String tokenValue = new String(Base64.encodeBase64URLSafe(DEFAULT_TOKEN_GENERATOR.generateKey()), US_ASCII);
         SecureToken secureToken = new SecureToken();
         secureToken.setToken(tokenValue);
         secureToken.setExpireAt(LocalDateTime.now().plusSeconds(getTokenValidityInSeconds()));
@@ -48,7 +49,7 @@ public class SecureTokenServiceImpl implements SecureTokenService {
     }
 
     @Override
-    public SecureToken findByToken(String token) {
+    public Optional<SecureToken> findByToken(String token) {
         return secureTokenRepository.findSecureTokenByToken(token);
     }
 

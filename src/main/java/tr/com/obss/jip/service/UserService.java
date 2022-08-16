@@ -16,8 +16,6 @@ import java.util.List;
 public interface UserService {
     List<UserDto> getAllUsers();
 
-    void createNewUser(CreateNewUser createNewUserRequest);
-
     UserDto findByUsername(String username);
 
     void addReadBook(String name);
@@ -37,10 +35,4 @@ public interface UserService {
     void updateUserById(CreateNewUser createNewUser, Long id);
 
     List<UserDto> getAllContainsUsers(String keyword);
-
-    void sendRegistrationConfirmationEmail(User user);
-
-    String verifyToken(String token);
-
-    boolean verifyUser(String token);
 }

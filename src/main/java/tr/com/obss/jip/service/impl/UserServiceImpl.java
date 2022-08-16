@@ -57,8 +57,6 @@ public class UserServiceImpl implements UserService {
     private final SecureTokenService secureTokenService;
     private final SecureTokenRepository secureTokenRepository;
     private final EmailService emailService;
-    private static final String REDIRECT_LOGIN= "http://localhost:3000/";
-    private final MessageSource messageSource;
     @Value("${site.base.url.https}")
     private String baseURL;
 
@@ -69,32 +67,6 @@ public class UserServiceImpl implements UserService {
         allUsers.forEach(user -> retList.add(userMapper.mapTo(user)));
 
         return retList;
-    }
-
-    @Override
-    public void createNewUser(CreateNewUser createNewUserRequest) {
-        final Optional<User> existUser = userRepository.findUserByUsername(createNewUserRequest.getUsername());
-
-        if (existUser.isPresent()) {
-            throw new UserAlreadyExistException(createNewUserRequest.getUsername());
-        }
-
-        User user = registerUser(createNewUserRequest);
-        userRepository.save(user);
-
-        sendRegistrationConfirmationEmail(user);
-    }
-
-    private User registerUser(CreateNewUser createNewUserRequest) {
-        User user = userMapper.mapTo(createNewUserRequest);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setCreateDate(new Date());
-
-        final Role standardRole = roleService.findByName(RoleType.ROLE_USER);
-        user.setRoles(List.of(standardRole));
-        user.setEnabled(false);
-
-        return user;
     }
 
     @Override
@@ -181,55 +153,6 @@ public class UserServiceImpl implements UserService {
         allUsers.forEach(user -> retList.add(userMapper.mapTo(user)));
 
         return retList;
-    }
-
-    @Override
-    public void sendRegistrationConfirmationEmail(User user) {
-        SecureToken secureToken = secureTokenService.createSecureToken();
-        secureToken.setUser(user);
-        secureTokenRepository.save(secureToken);
-
-        AccountVerificationEmailContext emailContext = new AccountVerificationEmailContext();
-        emailContext.init(user);
-        emailContext.setToken(secureToken.getToken());
-        emailContext.buildVerificationUrl(baseURL, secureToken.getToken());
-        try {
-            emailService.sendMail(emailContext);
-        } catch (MessagingException e) {
-            log.warn(e.getMessage());
-        }
-    }
-
-    @Override
-    public String verifyToken(String token){
-        try {
-            verifyUser(token);
-        } catch (InvalidTokenException e) {
-            return "The token is expired or incorrect!";
-        }
-
-        return "You have successfully verified your account!";
-    }
-
-    @Override
-    public boolean verifyUser(String token) {
-        SecureToken secureToken = secureTokenService.findByToken(token);
-
-        if(Objects.isNull(secureToken) || secureToken.isExpired()){
-            throw new InvalidTokenException("Token is not valid");
-        }
-
-        User user = userRepository.findById(secureToken.getUser().getId()).orElseThrow(UserNotFoundException::new);
-
-        if(Objects.isNull(user)){
-            return false;
-        }
-
-        user.setEnabled(true);
-        userRepository.save(user);
-
-        secureTokenService.removeToken(secureToken);
-        return true;
     }
 
     private void isUnameEmailUnique(CreateNewUser createNewUser, User userExist) {

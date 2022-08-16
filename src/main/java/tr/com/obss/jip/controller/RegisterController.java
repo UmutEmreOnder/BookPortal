@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.obss.jip.dto.create.CreateNewUser;
-import tr.com.obss.jip.service.UserService;
+import tr.com.obss.jip.service.RegisterService;
 
 import javax.validation.Valid;
 
@@ -16,16 +16,22 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/api/register")
 public class RegisterController {
-    private final UserService userService;
+    private final RegisterService registerService;
 
     @PostMapping("/")
     public Boolean createNewUser(@RequestBody @Valid CreateNewUser createNewUser) {
-        userService.createNewUser(createNewUser);
+        registerService.createNewUser(createNewUser);
         return Boolean.TRUE;
     }
 
     @GetMapping("/verify")
-    public String verifyToken(@RequestParam("token") String token) {
-        return userService.verifyToken(token);
+    public Boolean verifyToken(@RequestParam("token") String token) {
+        return registerService.verifyToken(token);
+    }
+
+    @PostMapping("/verify")
+    public Boolean sendToken(@RequestParam("email") String email) {
+        registerService.sendNewEmail(email);
+        return Boolean.TRUE;
     }
 }

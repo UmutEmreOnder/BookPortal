@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tr.com.obss.jip.dto.BaseUserDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.service.BaseUserService;
@@ -41,6 +40,11 @@ public class UserController {
     public Boolean updateUser(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewUser) {
         userService.updateUserById(createNewUser, id);
         return Boolean.TRUE;
+    }
+
+    @GetMapping("/verify")
+    public String verifyToken(@RequestParam("token") String token) {
+        return userService.verifyToken(token);
     }
 
     @GetMapping("/")

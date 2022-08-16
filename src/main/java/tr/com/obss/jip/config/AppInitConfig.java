@@ -7,13 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.model.Admin;
-import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Genre;
 import tr.com.obss.jip.model.GenreType;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.service.AdminService;
-import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.GenreService;
 import tr.com.obss.jip.service.RoleService;
 
@@ -55,6 +53,7 @@ public class AppInitConfig {
                         .builder()
                         .name("System")
                         .surname("Admin")
+                        .enabled(true)
                         .age(0)
                         .email("admin@bookportal.com")
                         .username("sys.admin")

@@ -40,6 +40,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/user/")
                 .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/user/verify")
+                .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/user/")
                 .hasAnyRole("USER", "AUTHOR", "ADMIN")
                 .antMatchers("/api/user/**")
@@ -83,7 +85,7 @@ public class SecurityConfig {
         return username -> {
             final BaseUser user = baseUserService.getUserByUsername(username);
             List<String> roleList = user.getRoles().stream().map(role -> role.getName().name()).toList();
-            return new MyUserDetails(user.getUsername(), user.getPassword(), roleList);
+            return new MyUserDetails(user.getUsername(), user.getPassword(), roleList, user.getEnabled());
         };
     }
 }

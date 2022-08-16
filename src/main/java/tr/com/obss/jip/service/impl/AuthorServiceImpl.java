@@ -69,6 +69,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         final Role standardRole = roleService.findByName(RoleType.ROLE_AUTHOR);
         author.setRoles(List.of(standardRole));
+        author.setEnabled(true);
 
         authorRepository.save(author);
     }

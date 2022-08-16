@@ -13,5 +13,5 @@ import javax.persistence.Entity;
 @SuperBuilder
 
 @Entity
-public class Admin extends BaseUser{
+public class Admin extends BaseUser {
 }

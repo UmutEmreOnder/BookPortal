@@ -1,4 +1,4 @@
-package tr.com.obss.jip.dto;
+package tr.com.obss.jip.mail;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -30,21 +30,10 @@ public class UserController {
     private final BookService bookService;
     private final BaseUserService baseUserService;
 
-    @PostMapping("/")
-    public Boolean createNewUser(@RequestBody @Valid CreateNewUser createNewUser) {
-        userService.createNewUser(createNewUser);
-        return Boolean.TRUE;
-    }
-
     @PutMapping("/")
     public Boolean updateUser(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewUser) {
         userService.updateUserById(createNewUser, id);
         return Boolean.TRUE;
-    }
-
-    @GetMapping("/verify")
-    public String verifyToken(@RequestParam("token") String token) {
-        return userService.verifyToken(token);
     }
 
     @GetMapping("/")

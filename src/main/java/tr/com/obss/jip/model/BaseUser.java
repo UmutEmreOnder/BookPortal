@@ -37,9 +37,6 @@ public class BaseUser {
 
     private Boolean enabled;
 
-    @OneToMany
-    private Set<SecureToken> tokens;
-
     @NotNBE
     private String name;
 

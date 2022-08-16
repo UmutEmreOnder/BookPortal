@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import tr.com.obss.jip.dto.AbstractEmailContext;
+import tr.com.obss.jip.mail.AbstractEmailContext;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import tr.com.obss.jip.service.EmailService;

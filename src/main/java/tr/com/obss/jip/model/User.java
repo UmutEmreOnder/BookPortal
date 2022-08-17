@@ -9,8 +9,12 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -28,4 +32,7 @@ public class User extends BaseUser {
 
     @OneToMany(cascade = {CascadeType.ALL})
     private List<Comment> comments;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Map<Book, Rating> rates;
 }

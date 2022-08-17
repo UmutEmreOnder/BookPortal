@@ -5,16 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
-import tr.com.obss.jip.dto.create.CreateNewComment;
 import tr.com.obss.jip.exception.BookAlreadyExistException;
 import tr.com.obss.jip.exception.BookNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Book;
+import tr.com.obss.jip.model.Comment;
 import tr.com.obss.jip.model.Genre;
 import tr.com.obss.jip.model.GenreType;
+import tr.com.obss.jip.model.Rating;
 import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.BookRepository;
+import tr.com.obss.jip.repository.RatingRepository;
 import tr.com.obss.jip.repository.UserRepository;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.GenreService;
@@ -32,6 +34,7 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final UserRepository userRepository;
     private final GenreService genreService;
+    private final RatingRepository ratingRepository;
 
     @Override
     public List<BookDto> getAllBooks() {
@@ -91,11 +94,19 @@ public class BookServiceImpl implements BookService {
         for (User user : userRepository.findAll()) {
             user.getReadList().remove(book);
             user.getFavoriteList().remove(book);
+            user.getRates().remove(book);
+            user.getComments().removeIf(comment -> comment.getBook() == book);
             userRepository.save(user);
         }
 
         if (author != null) {
             author.getBooks().remove(book);
+        }
+
+        for (Rating rating : ratingRepository.findAll()) {
+            if(rating.getBook() == book) {
+                ratingRepository.delete(rating);
+            }
         }
 
         bookRepository.delete(book);
@@ -109,5 +120,42 @@ public class BookServiceImpl implements BookService {
         books.forEach(book -> retList.add(bookMapper.mapTo(book)));
 
         return retList;
+    }
+
+    @Override
+    public void addRating(Rating rate, Book book) {
+        int total = book.getRate() * book.getRateCount();
+
+        book.setRateCount(book.getRateCount() + 1);
+        total += rate.getRate();
+        book.setRate(total / book.getRateCount());
+
+        bookRepository.save(book);
+
+        ratingRepository.save(rate);
+    }
+
+    @Override
+    public void updateRating(Rating rate, Rating oldRate, Book book) {
+        int total = book.getRate() * book.getRateCount();
+
+        total += (rate.getRate() - oldRate.getRate());
+        book.setRate(total / book.getRateCount());
+
+        bookRepository.save(book);
+
+        oldRate.setRate(rate.getRate());
+        ratingRepository.save(oldRate);
+    }
+
+    @Override
+    public void deleteRate(Book book, Rating rate) {
+        int total = book.getRate() * book.getRateCount();
+        total -= (rate.getRate());
+        book.setRateCount(book.getRateCount() - 1);
+
+        book.setRate(book.getRateCount() == 0 ? 0 : total / book.getRateCount());
+
+        ratingRepository.delete(rate);
     }
 }

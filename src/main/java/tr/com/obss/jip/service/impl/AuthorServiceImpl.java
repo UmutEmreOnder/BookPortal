@@ -22,11 +22,13 @@ import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.mapper.RespondedRequestMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.BaseUser;
+import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BaseUserRepository;
 import tr.com.obss.jip.service.AuthorService;
+import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RoleService;
 
@@ -49,6 +51,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final RespondedRequestMapper respondedRequestMapper;
     private final RequestService requestService;
     private final BaseUserRepository baseUserRepository;
+    private final BookService bookService;
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest) {
@@ -122,6 +125,12 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void deleteAuthorById(Long id) {
+        Author author = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
+
+        for (Book book : author.getBooks()) {
+            bookService.deleteBook(book.getId());
+        }
+
         authorRepository.deleteById(id);
     }
 

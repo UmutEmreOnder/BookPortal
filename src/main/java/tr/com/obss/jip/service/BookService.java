@@ -2,7 +2,8 @@ package tr.com.obss.jip.service;
 
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
-import tr.com.obss.jip.dto.create.CreateNewComment;
+import tr.com.obss.jip.model.Book;
+import tr.com.obss.jip.model.Rating;
 
 import java.util.List;
 
@@ -18,4 +19,10 @@ public interface BookService {
     void deleteBook(Long id);
 
     List<BookDto> findByNameContains(String keyword);
+
+    void addRating(Rating rate, Book book);
+
+    void updateRating(Rating rate, Rating oldRate, Book book);
+
+    void deleteRate(Book book, Rating rating);
 }

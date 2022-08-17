@@ -16,8 +16,5 @@ public class CreateNewRequest {
     @NotNBE
     private String bookIsbn;
 
-    @OneToOne
-    private Author author;
-
     private String genreName;
 }

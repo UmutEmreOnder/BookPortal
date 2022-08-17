@@ -60,7 +60,7 @@ public class AdminController {
 
     @DeleteMapping("/user")
     public Boolean deleteUser(@RequestParam("id") Long id) {
-        baseUserService.deleteUser(id);
+        userService.deleteUser(id);
         return Boolean.TRUE;
     }
 

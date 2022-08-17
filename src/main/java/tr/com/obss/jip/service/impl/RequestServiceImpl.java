@@ -35,8 +35,8 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest, Author author) {
-        createNewRequest.setAuthor(author);
         AddingBookRequest request = requestMapper.mapTo(createNewRequest);
+        request.setAuthor(author);
         request.setCreateDate(new Date());
 
         author.getAddingBookRequests().add(request);

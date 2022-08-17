@@ -17,6 +17,7 @@ import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.CommentService;
+import tr.com.obss.jip.service.RateService;
 import tr.com.obss.jip.service.UserService;
 
 import javax.validation.Valid;
@@ -33,6 +34,7 @@ public class UserController {
     private final BookService bookService;
     private final BaseUserService baseUserService;
     private final CommentService commentService;
+    private final RateService rateService;
 
     @PutMapping("/")
     public Boolean updateUser(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewUser) {
@@ -69,6 +71,12 @@ public class UserController {
     @GetMapping("/book/like/{keyword}")
     public List<BookDto> findBooksByKeyword(@PathVariable("keyword") String keyword) {
         return bookService.findByNameContains(keyword);
+    }
+
+    @PostMapping("/rate/{bookId}")
+    public Boolean rateABook(@RequestParam("rate") Byte rate, @PathVariable("bookId") Long bookId) {
+        rateService.rateABook(rate, bookId);
+        return Boolean.TRUE;
     }
 
     @PostMapping("/book/read")

@@ -2,44 +2,33 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tr.com.obss.jip.mail.AccountVerificationEmailContext;
 import tr.com.obss.jip.dto.BaseUserDto;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.exception.BookNotFoundException;
-import tr.com.obss.jip.exception.InvalidTokenException;
 import tr.com.obss.jip.exception.UserAlreadyExistException;
 import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.UserMapper;
 import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Book;
-import tr.com.obss.jip.model.Role;
-import tr.com.obss.jip.model.RoleType;
-import tr.com.obss.jip.model.SecureToken;
+import tr.com.obss.jip.model.Comment;
+import tr.com.obss.jip.model.Rating;
 import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.BaseUserRepository;
 import tr.com.obss.jip.repository.BookRepository;
-import tr.com.obss.jip.repository.SecureTokenRepository;
 import tr.com.obss.jip.repository.UserRepository;
-import tr.com.obss.jip.service.EmailService;
-import tr.com.obss.jip.service.RoleService;
-import tr.com.obss.jip.service.SecureTokenService;
+import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.UserService;
 
-import javax.mail.MessagingException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -51,14 +40,9 @@ public class UserServiceImpl implements UserService {
     private final BookRepository bookRepository;
     private final BaseUserRepository baseUserRepository;
     private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
-    private final RoleService roleService;
     private final BookMapper bookMapper;
-    private final SecureTokenService secureTokenService;
-    private final SecureTokenRepository secureTokenRepository;
-    private final EmailService emailService;
-    @Value("${site.base.url.https}")
-    private String baseURL;
+
+    private final BookService bookService;
 
     public List<UserDto> getAllUsers() {
         final Iterable<User> allUsers = userRepository.findAll();
@@ -153,6 +137,37 @@ public class UserServiceImpl implements UserService {
         allUsers.forEach(user -> retList.add(userMapper.mapTo(user)));
 
         return retList;
+    }
+
+    @Override
+    public void addRating(Rating rate, Book book) {
+        User user = getAuthenticatedUser();
+
+        if (user.getRates().containsKey(book)) {
+            bookService.updateRating(rate, user.getRates().get(book), book);
+            user.getRates().replace(book, rate);
+            userRepository.save(user);
+        } else {
+            bookService.addRating(rate, book);
+            user.getRates().put(book, rate);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+        for(Book book : bookRepository.findAll()) {
+            if (user.getRates().containsKey(book)) {
+                bookService.deleteRate(book, user.getRates().get(book));
+            }
+
+            book.getComments().removeIf(comment -> comment.getUser() == user);
+            bookRepository.save(book);
+        }
+
+        userRepository.delete(user);
     }
 
     private void isUnameEmailUnique(CreateNewUser createNewUser, User userExist) {

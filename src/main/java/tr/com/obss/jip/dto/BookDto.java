@@ -37,6 +37,10 @@ public class BookDto {
 
     private int favoriteCounter;
 
+    private int rate;
+
+    private int rateCount;
+
     @OneToMany
     private List<CommentDto> comments;
 

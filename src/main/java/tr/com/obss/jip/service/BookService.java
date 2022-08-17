@@ -2,6 +2,7 @@ package tr.com.obss.jip.service;
 
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
+import tr.com.obss.jip.dto.create.CreateNewComment;
 
 import java.util.List;
 

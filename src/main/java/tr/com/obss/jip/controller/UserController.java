@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.obss.jip.dto.BookDto;
+import tr.com.obss.jip.dto.create.CreateNewComment;
 import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.BookService;
+import tr.com.obss.jip.service.CommentService;
 import tr.com.obss.jip.service.UserService;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,6 +32,7 @@ public class UserController {
     private final UserService userService;
     private final BookService bookService;
     private final BaseUserService baseUserService;
+    private final CommentService commentService;
 
     @PutMapping("/")
     public Boolean updateUser(@RequestParam("id") Long id, @RequestBody @Valid CreateNewUser createNewUser) {
@@ -44,6 +48,22 @@ public class UserController {
     @GetMapping("/book")
     public List<BookDto> getAllBooks() {
         return bookService.getAllBooks();
+    }
+
+    @GetMapping("/book/{name}")
+    public BookDto getBookByName(@PathVariable("name") String name) {
+        return bookService.findByName(name);
+    }
+
+    @PostMapping("/comment")
+    public Boolean addComment(@RequestParam("bookId") Long bookId, @RequestBody @Valid CreateNewComment comment) {
+        commentService.addComment(bookId, comment);
+        return Boolean.TRUE;
+    }
+
+    @DeleteMapping("/comment")
+    public Boolean deleteComment(@RequestParam("id") Long id) {
+        return commentService.deleteComment(id);
     }
 
     @GetMapping("/book/like/{keyword}")

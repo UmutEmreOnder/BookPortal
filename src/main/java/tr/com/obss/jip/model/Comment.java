@@ -7,16 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tr.com.obss.jip.annotations.NotNBE;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.OneToOne;
 
 @Getter
 @Setter
@@ -25,31 +21,18 @@ import java.util.List;
 @NoArgsConstructor
 
 @Entity
-public class Book {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
     @NotNBE
-    private String name;
+    private String comment;
 
-    @NotNBE
-    private String isbn;
+    @OneToOne
+    private User user;
 
-    @ManyToOne
-    private Author author;
-
-    private int readCounter;
-
-    private int favoriteCounter;
-
-    @NotNBE
-    private Date createDate;
-
-    @ManyToOne
-    private Genre genre;
-
-    @OneToMany(cascade = {CascadeType.ALL})
-    private List<Comment> comments;
+    @OneToOne
+    private Book book;
 }

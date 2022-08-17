@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Getter
@@ -22,7 +23,9 @@ public class User extends BaseUser {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Book> readList;
 
-
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Book> favoriteList;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<Comment> comments;
 }

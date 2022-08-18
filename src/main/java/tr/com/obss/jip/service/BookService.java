@@ -25,4 +25,6 @@ public interface BookService {
     void updateRating(Rating rate, Rating oldRate, Book book);
 
     void deleteRate(Book book, Rating rating);
+
+    BookDto findById(Long id);
 }

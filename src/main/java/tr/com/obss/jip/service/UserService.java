@@ -14,13 +14,13 @@ public interface UserService {
 
     UserDto findByUsername(String username);
 
-    void addReadBook(String name);
+    void addReadBook(Long id);
 
-    void addFavoriteBook(String name);
+    void addFavoriteBook(Long id);
 
-    void deleteReadBook(String name);
+    void deleteReadBook(Long id);
 
-    void deleteFavoriteBook(String name);
+    void deleteFavoriteBook(Long id);
 
     List<BookDto> getFavoriteBooks();
 
@@ -35,4 +35,6 @@ public interface UserService {
     void addRating(Rating rate, Book book);
 
     void deleteUser(Long id);
+
+    Byte getRate(Long bookId);
 }

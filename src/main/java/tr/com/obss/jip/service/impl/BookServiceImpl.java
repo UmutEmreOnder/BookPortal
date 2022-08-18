@@ -158,4 +158,9 @@ public class BookServiceImpl implements BookService {
 
         ratingRepository.delete(rate);
     }
+
+    @Override
+    public BookDto findById(Long id) {
+        return bookMapper.mapTo(bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id)));
+    }
 }

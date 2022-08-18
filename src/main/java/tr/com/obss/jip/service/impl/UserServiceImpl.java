@@ -59,10 +59,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addReadBook(String name) {
+    public void addReadBook(Long id) {
         User user = getAuthenticatedUser();
 
-        Book book = bookRepository.findBookByName(name).orElseThrow(() -> new BookNotFoundException(name));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
         book.setReadCounter(book.getReadCounter() + 1);
         user.getReadList().add(book);
 
@@ -70,10 +70,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addFavoriteBook(String name) {
+    public void addFavoriteBook(Long id) {
         User user = getAuthenticatedUser();
 
-        Book book = bookRepository.findBookByName(name).orElseThrow(() -> new BookNotFoundException(name));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));;
         book.setFavoriteCounter(book.getFavoriteCounter() + 1);
         user.getFavoriteList().add(book);
 
@@ -81,10 +81,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteReadBook(String name) {
+    public void deleteReadBook(Long id) {
         User user = getAuthenticatedUser();
 
-        Book book = bookRepository.findBookByName(name).orElseThrow(() -> new BookNotFoundException(name));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
         book.setReadCounter(book.getReadCounter() - 1);
         user.getReadList().remove(book);
 
@@ -92,10 +92,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteFavoriteBook(String name) {
+    public void deleteFavoriteBook(Long id) {
         User user = getAuthenticatedUser();
 
-        Book book = bookRepository.findBookByName(name).orElseThrow(() -> new BookNotFoundException(name));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
         book.setFavoriteCounter(book.getFavoriteCounter() - 1);
         user.getFavoriteList().remove(book);
 
@@ -168,6 +168,17 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.delete(user);
+    }
+
+    @Override
+    public Byte getRate(Long bookId) {
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new BookNotFoundException(bookId));
+
+        if (getAuthenticatedUser().getRates().containsKey(book)) {
+            return getAuthenticatedUser().getRates().get(book).getRate();
+        }
+
+        return 0;
     }
 
     private void isUnameEmailUnique(CreateNewUser createNewUser, User userExist) {

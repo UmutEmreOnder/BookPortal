@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.obss.jip.dto.BookDto;
+import tr.com.obss.jip.dto.CommentDto;
 import tr.com.obss.jip.dto.create.CreateNewComment;
 import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.service.BaseUserService;
@@ -52,15 +53,20 @@ public class UserController {
         return bookService.getAllBooks();
     }
 
-    @GetMapping("/book/{name}")
-    public BookDto getBookByName(@PathVariable("name") String name) {
-        return bookService.findByName(name);
+    @GetMapping("/book/{id}")
+    public BookDto getBookById(@PathVariable("id") Long id) {
+        return bookService.findById(id);
     }
 
     @PostMapping("/comment")
     public Boolean addComment(@RequestParam("bookId") Long bookId, @RequestBody @Valid CreateNewComment comment) {
         commentService.addComment(bookId, comment);
         return Boolean.TRUE;
+    }
+
+    @GetMapping("/comment")
+    public List<CommentDto> getComments(@RequestParam("bookId") Long bookId, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize) {
+        return commentService.getComments(bookId, page, pageSize);
     }
 
     @DeleteMapping("/comment")
@@ -79,27 +85,32 @@ public class UserController {
         return Boolean.TRUE;
     }
 
+    @GetMapping("/rate/{bookId}")
+    public Byte getRate(@PathVariable("bookId") Long bookId) {
+        return userService.getRate(bookId);
+    }
+
     @PostMapping("/book/read")
-    public Boolean addReadBook(@RequestParam("name") String name) {
-        userService.addReadBook(name);
+    public Boolean addReadBook(@RequestParam("id") Long id) {
+        userService.addReadBook(id);
         return Boolean.TRUE;
     }
 
     @PostMapping("/book/favorite")
-    public Boolean addFavoriteBook(@RequestParam("name") String name) {
-        userService.addFavoriteBook(name);
+    public Boolean addFavoriteBook(@RequestParam("id") Long id) {
+        userService.addFavoriteBook(id);
         return Boolean.TRUE;
     }
 
     @DeleteMapping("/book/read")
-    public Boolean deleteReadBook(@RequestParam("name") String name) {
-        userService.deleteReadBook(name);
+    public Boolean deleteReadBook(@RequestParam("id") Long id) {
+        userService.deleteReadBook(id);
         return Boolean.TRUE;
     }
 
     @DeleteMapping("/book/favorite")
-    public Boolean deleteFavoriteBook(@RequestParam("name") String name) {
-        userService.deleteFavoriteBook(name);
+    public Boolean deleteFavoriteBook(@RequestParam("id") Long id) {
+        userService.deleteFavoriteBook(id);
         return Boolean.TRUE;
     }
 

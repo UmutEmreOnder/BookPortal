@@ -2,6 +2,7 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
@@ -17,6 +18,7 @@ import tr.com.obss.jip.repository.RequestRepository;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RespondedRequestService;
+import tr.com.obss.jip.util.Helper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,8 +47,10 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<RequestDto> getAllRequests() {
-        Iterable<AddingBookRequest> requests = requestRepository.findAll();
+    public List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+
+        Iterable<AddingBookRequest> requests = requestRepository.findAll(pageable);
         List<RequestDto> retList = new ArrayList<>();
 
         requests.forEach(request -> retList.add(requestMapper.mapTo(request)));
@@ -80,6 +84,11 @@ public class RequestServiceImpl implements RequestService {
 
         Author author = addingBookRequest.getAuthor();
         removeRequestAndCreateRespond(author, addingBookRequest, RespondType.DENIED);
+    }
+
+    @Override
+    public Long getCount() {
+        return requestRepository.count();
     }
 
     private void removeRequestAndCreateRespond(Author author, AddingBookRequest addingBookRequest, RespondType type) {

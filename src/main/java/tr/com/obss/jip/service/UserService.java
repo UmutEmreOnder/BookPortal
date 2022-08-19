@@ -10,7 +10,7 @@ import tr.com.obss.jip.model.Rating;
 import java.util.List;
 
 public interface UserService {
-    List<UserDto> getAllUsers();
+    List<UserDto> getAllUsers(Integer page, Integer pageSize, String field, String order);
 
     UserDto findByUsername(String username);
 
@@ -37,4 +37,6 @@ public interface UserService {
     void deleteUser(Long id);
 
     Byte getRate(Long bookId);
+
+    Long getCount();
 }

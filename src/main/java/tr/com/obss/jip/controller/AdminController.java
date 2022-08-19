@@ -39,8 +39,13 @@ public class AdminController {
 
     // User Part
     @GetMapping("/user")
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+    public List<UserDto> getAllUsers(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return userService.getAllUsers(page, pageSize, field, order);
+    }
+
+    @GetMapping("/user/count")
+    public Long getUserCount() {
+        return userService.getCount();
     }
 
     @GetMapping("/user/like/{keyword}")
@@ -85,8 +90,13 @@ public class AdminController {
     }
 
     @GetMapping("/author")
-    public List<AuthorDto> getAllAuthors() {
-        return authorService.getAllAuthors();
+    public List<AuthorDto> getAllAuthors(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return authorService.getAllAuthors(page, pageSize, field, order);
+    }
+
+    @GetMapping("/author/count")
+    public Long getAuthorCount() {
+        return authorService.getCount();
     }
 
     @GetMapping("/author/like/{keyword}")
@@ -103,8 +113,13 @@ public class AdminController {
 
     // AddingBookRequest Part
     @GetMapping("/request")
-    public List<RequestDto> getAllRequest() {
-        return requestService.getAllRequests();
+    public List<RequestDto> getAllRequest(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return requestService.getAllRequests(page, pageSize, field, order);
+    }
+
+    @GetMapping("/request/count")
+    public Long getRequestCount() {
+        return requestService.getCount();
     }
 
     @PostMapping("/request/accept")
@@ -117,13 +132,6 @@ public class AdminController {
     public Boolean denyRequest(@RequestParam("id") Long id) {
         requestService.denyRequest(id);
         return Boolean.TRUE;
-    }
-
-
-    // Book Part
-    @GetMapping("/book")
-    public List<BookDto> getAllBooks() {
-        return bookService.getAllBooks();
     }
 
     @GetMapping("/book/{name}")

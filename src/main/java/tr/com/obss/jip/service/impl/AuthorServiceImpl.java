@@ -2,6 +2,9 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +34,7 @@ import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RoleService;
+import tr.com.obss.jip.util.Helper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,8 +97,10 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDto> getAllAuthors() {
-        Iterable<Author> authors = authorRepository.findAll();
+    public List<AuthorDto> getAllAuthors(Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+
+        Iterable<Author> authors = authorRepository.findAll(pageable);
 
         List<AuthorDto> authorDtos = new ArrayList<>();
         authors.forEach(author -> authorDtos.add(authorMapper.mapTo(author)));
@@ -152,6 +158,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDto findByUsername(String username) {
         return authorMapper.mapTo(authorRepository.findAuthorByUsername(username).orElseThrow(() -> new AuthorNotFoundException(username)));
+    }
+
+    @Override
+    public Long getCount() {
+        return authorRepository.count();
     }
 
     private void transferFields(Author author, Author authorExist) {

@@ -20,7 +20,7 @@ public interface AuthorService {
 
     List<RespondedRequestDto> getAllRespondedRequests();
 
-    List<AuthorDto> getAllAuthors();
+    List<AuthorDto> getAllAuthors(Integer page, Integer pageSize, String field, String order);
 
     void updateAuthor(Long id, CreateNewUser createNewAuthor);
 
@@ -31,4 +31,6 @@ public interface AuthorService {
     List<AuthorDto> getAllAuthorsContains(String keyword);
 
     AuthorDto findByUsername(String username);
+
+    Long getCount();
 }

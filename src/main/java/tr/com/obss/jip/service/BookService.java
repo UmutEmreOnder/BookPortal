@@ -27,4 +27,8 @@ public interface BookService {
     void deleteRate(Book book, Rating rating);
 
     BookDto findById(Long id);
+
+    List<BookDto> getAllBooks(Integer page, Integer pageSize, String field, String order);
+
+    Long getCount();
 }

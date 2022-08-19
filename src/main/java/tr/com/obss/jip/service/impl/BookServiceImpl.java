@@ -2,6 +2,9 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
@@ -20,6 +23,7 @@ import tr.com.obss.jip.repository.RatingRepository;
 import tr.com.obss.jip.repository.UserRepository;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.GenreService;
+import tr.com.obss.jip.util.Helper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +48,24 @@ public class BookServiceImpl implements BookService {
         books.forEach(book -> retList.add(bookMapper.mapTo(book)));
 
         return retList;
+    }
+
+
+    @Override
+    public List<BookDto> getAllBooks(Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+
+        final Iterable<Book> books = bookRepository.findAll(pageable);
+
+        List<BookDto> retList = new ArrayList<>();
+        books.forEach(book -> retList.add(bookMapper.mapTo(book)));
+
+        return retList;
+    }
+
+    @Override
+    public Long getCount() {
+        return bookRepository.count();
     }
 
     @Override
@@ -143,9 +165,6 @@ public class BookServiceImpl implements BookService {
         book.setRate(total / book.getRateCount());
 
         bookRepository.save(book);
-
-        oldRate.setRate(rate.getRate());
-        ratingRepository.save(oldRate);
     }
 
     @Override

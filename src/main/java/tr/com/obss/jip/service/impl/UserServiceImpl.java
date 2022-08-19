@@ -2,6 +2,9 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,8 +28,10 @@ import tr.com.obss.jip.repository.BookRepository;
 import tr.com.obss.jip.repository.UserRepository;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.UserService;
+import tr.com.obss.jip.util.Helper;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -44,8 +49,11 @@ public class UserServiceImpl implements UserService {
 
     private final BookService bookService;
 
-    public List<UserDto> getAllUsers() {
-        final Iterable<User> allUsers = userRepository.findAll();
+    @Override
+    public List<UserDto> getAllUsers(Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+
+        final Iterable<User> allUsers = userRepository.findAll(pageable);
 
         List<UserDto> retList = new ArrayList<>();
         allUsers.forEach(user -> retList.add(userMapper.mapTo(user)));
@@ -179,6 +187,11 @@ public class UserServiceImpl implements UserService {
         }
 
         return 0;
+    }
+
+    @Override
+    public Long getCount() {
+        return userRepository.count();
     }
 
     private void isUnameEmailUnique(CreateNewUser createNewUser, User userExist) {

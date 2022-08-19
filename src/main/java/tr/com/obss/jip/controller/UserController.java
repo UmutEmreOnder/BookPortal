@@ -49,8 +49,13 @@ public class UserController {
     }
 
     @GetMapping("/book")
-    public List<BookDto> getAllBooks() {
-        return bookService.getAllBooks();
+    public List<BookDto> getAllBooks(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return bookService.getAllBooks(page, pageSize, field, order);
+    }
+
+    @GetMapping("/book/count")
+    public Long getBookCount() {
+        return bookService.getCount();
     }
 
     @GetMapping("/book/{id}")

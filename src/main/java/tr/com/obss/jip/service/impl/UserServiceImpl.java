@@ -138,8 +138,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllContainsUsers(String keyword) {
-        final Iterable<User> allUsers = userRepository.findUserByNameContains(keyword);
+    public List<UserDto> getAllContainsUsers(String keyword, Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+        final List<User> allUsers = userRepository.findUserByNameContains(keyword, pageable);
 
         List<UserDto> retList = new ArrayList<>();
         allUsers.forEach(user -> retList.add(userMapper.mapTo(user)));

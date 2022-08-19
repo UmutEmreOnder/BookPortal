@@ -8,8 +8,6 @@ import tr.com.obss.jip.model.Rating;
 import java.util.List;
 
 public interface BookService {
-    List<BookDto> getAllBooks();
-
     BookDto findByName(String name);
 
     void createNewBook(CreateNewBook createNewBookRequest);
@@ -18,7 +16,7 @@ public interface BookService {
 
     void deleteBook(Long id);
 
-    List<BookDto> findByNameContains(String keyword);
+    List<BookDto> findByNameContains(String keyword, Integer page, Integer pageSize, String field, String order);
 
     void addRating(Rating rate, Book book);
 

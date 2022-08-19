@@ -49,8 +49,8 @@ public class AdminController {
     }
 
     @GetMapping("/user/like/{keyword}")
-    public List<UserDto> getAllContainsUsers(@PathVariable("keyword") String keyword) {
-        return userService.getAllContainsUsers(keyword);
+    public List<UserDto> getAllContainsUsers(@PathVariable("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return userService.getAllContainsUsers(keyword, page, pageSize, field, order);
     }
 
     @GetMapping("/user/{username}")
@@ -100,8 +100,8 @@ public class AdminController {
     }
 
     @GetMapping("/author/like/{keyword}")
-    public List<AuthorDto> getAllAuthorsContains(@PathVariable("keyword") String keyword) {
-        return authorService.getAllAuthorsContains(keyword);
+    public List<AuthorDto> getAllAuthorsContains(@PathVariable("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return authorService.getAllAuthorsContains(keyword, page, pageSize, field, order);
     }
 
     @DeleteMapping("/author")

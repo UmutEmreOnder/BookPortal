@@ -28,7 +28,7 @@ public interface AuthorService {
 
     List<BookDto> findByNameContains(String keyword);
 
-    List<AuthorDto> getAllAuthorsContains(String keyword);
+    List<AuthorDto> getAllAuthorsContains(String keyword, Integer page, Integer pageSize, String field, String order);
 
     AuthorDto findByUsername(String username);
 

@@ -80,8 +80,8 @@ public class UserController {
     }
 
     @GetMapping("/book/like/{keyword}")
-    public List<BookDto> findBooksByKeyword(@PathVariable("keyword") String keyword) {
-        return bookService.findByNameContains(keyword);
+    public List<BookDto> findBooksByKeyword(@PathVariable("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return bookService.findByNameContains(keyword, page, pageSize, field, order);
     }
 
     @PostMapping("/rate/{bookId}")

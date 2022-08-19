@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
@@ -13,7 +12,6 @@ import tr.com.obss.jip.exception.BookNotFoundException;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Book;
-import tr.com.obss.jip.model.Comment;
 import tr.com.obss.jip.model.Genre;
 import tr.com.obss.jip.model.GenreType;
 import tr.com.obss.jip.model.Rating;
@@ -39,17 +37,6 @@ public class BookServiceImpl implements BookService {
     private final UserRepository userRepository;
     private final GenreService genreService;
     private final RatingRepository ratingRepository;
-
-    @Override
-    public List<BookDto> getAllBooks() {
-        final Iterable<Book> books = bookRepository.findAll();
-
-        List<BookDto> retList = new ArrayList<>();
-        books.forEach(book -> retList.add(bookMapper.mapTo(book)));
-
-        return retList;
-    }
-
 
     @Override
     public List<BookDto> getAllBooks(Integer page, Integer pageSize, String field, String order) {
@@ -135,8 +122,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> findByNameContains(String keyword) {
-        final Iterable<Book> books = bookRepository.findBooksByNameContains(keyword);
+    public List<BookDto> findByNameContains(String keyword, Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+
+        final List<Book> books = bookRepository.findBooksByNameContains(keyword, pageable);
 
         List<BookDto> retList = new ArrayList<>();
         books.forEach(book -> retList.add(bookMapper.mapTo(book)));

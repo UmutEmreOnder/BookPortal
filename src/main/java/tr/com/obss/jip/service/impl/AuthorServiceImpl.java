@@ -146,8 +146,10 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDto> getAllAuthorsContains(String keyword) {
-        final Iterable<Author> allUsers = authorRepository.findAuthorsByNameContains(keyword);
+    public List<AuthorDto> getAllAuthorsContains(String keyword, Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+
+        final List<Author> allUsers = authorRepository.findAuthorsByNameContains(keyword, pageable);
 
         List<AuthorDto> retList = new ArrayList<>();
         allUsers.forEach(author -> retList.add(authorMapper.mapTo(author)));

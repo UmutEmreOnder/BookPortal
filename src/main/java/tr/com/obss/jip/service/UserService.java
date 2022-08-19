@@ -30,7 +30,7 @@ public interface UserService {
 
     void updateUserById(CreateNewUser createNewUser, Long id);
 
-    List<UserDto> getAllContainsUsers(String keyword);
+    List<UserDto> getAllContainsUsers(String keyword, Integer page, Integer pageSize, String field, String order);
 
     void addRating(Rating rate, Book book);
 

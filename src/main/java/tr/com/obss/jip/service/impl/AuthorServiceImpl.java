@@ -23,6 +23,7 @@ import tr.com.obss.jip.mapper.AuthorMapper;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.mapper.RespondedRequestMapper;
+import tr.com.obss.jip.model.AddingBookRequest;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Book;
@@ -30,6 +31,9 @@ import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BaseUserRepository;
+import tr.com.obss.jip.repository.BookRepository;
+import tr.com.obss.jip.repository.RequestRepository;
+import tr.com.obss.jip.repository.RespondedRequestRepository;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RequestService;
@@ -56,6 +60,9 @@ public class AuthorServiceImpl implements AuthorService {
     private final RequestService requestService;
     private final BaseUserRepository baseUserRepository;
     private final BookService bookService;
+    private final BookRepository bookRepository;
+    private final RequestRepository requestRepository;
+    private final RespondedRequestRepository respondedRequestRepository;
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest) {
@@ -82,18 +89,21 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<RequestDto> getAllRequests() {
-        return getAuthenticatedAuthor().getAddingBookRequests().stream().map(requestMapper::mapTo).toList();
+    public List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+        return requestRepository.findAddingBookRequestsByAuthor(getAuthenticatedAuthor(), pageable).stream().map(requestMapper::mapTo).toList();
     }
 
     @Override
-    public List<BookDto> getAllBooks() {
-        return getAuthenticatedAuthor().getBooks().stream().map(bookMapper::mapTo).toList();
+    public List<BookDto> getAllBooks(Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+        return bookRepository.findBooksByAuthor(getAuthenticatedAuthor(), pageable).stream().map(bookMapper::mapTo).toList();
     }
 
     @Override
-    public List<RespondedRequestDto> getAllRespondedRequests() {
-        return getAuthenticatedAuthor().getRespondedBookRequests().stream().map(respondedRequestMapper::mapTo).toList();
+    public List<RespondedRequestDto> getAllRespondedRequests(Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+        return respondedRequestRepository.findRespondedBookRequestByAuthor(getAuthenticatedAuthor(), pageable).stream().map(respondedRequestMapper::mapTo).toList();
     }
 
     @Override
@@ -141,8 +151,9 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<BookDto> findByNameContains(String keyword) {
-        return Objects.requireNonNull(getAuthenticatedAuthor()).getBooks().stream().filter(book -> book.getName().contains(keyword)).map(bookMapper::mapTo).toList();
+    public List<BookDto> findByNameContains(String keyword, Integer page, Integer pageSize, String field, String order) {
+        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+        return bookRepository.findBooksByAuthorAndNameContains(getAuthenticatedAuthor(),keyword, pageable).stream().map(bookMapper::mapTo).toList();
     }
 
     @Override
@@ -165,6 +176,21 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Long getCount() {
         return authorRepository.count();
+    }
+
+    @Override
+    public Integer getBookCount() {
+        return getAuthenticatedAuthor().getBooks().size();
+    }
+
+    @Override
+    public Integer getRequestCount() {
+        return getAuthenticatedAuthor().getAddingBookRequests().size();
+    }
+
+    @Override
+    public Integer getRespondCount() {
+        return getAuthenticatedAuthor().getRespondedBookRequests().size();
     }
 
     private void transferFields(Author author, Author authorExist) {

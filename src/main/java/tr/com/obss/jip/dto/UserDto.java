@@ -56,11 +56,4 @@ public class UserDto {
 
     @ManyToMany
     private List<Role> roles;
-
-    @ManyToMany
-    private List<BookDto> readList;
-
-
-    @ManyToMany
-    private List<BookDto> favoriteList;
 }

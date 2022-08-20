@@ -41,22 +41,37 @@ public class AuthorController {
     }
 
     @GetMapping("/book")
-    public List<BookDto> getAllBooks() {
-        return authorService.getAllBooks();
+    public List<BookDto> getAllBooks(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return authorService.getAllBooks(page, pageSize, field, order);
+    }
+
+    @GetMapping("/book/count")
+    public Integer getBookCount() {
+        return authorService.getBookCount();
     }
 
     @GetMapping("/book/like/{keyword}")
-    public List<BookDto> getBooksByKeyword(@PathVariable("keyword") String keyword) {
-        return authorService.findByNameContains(keyword);
+    public List<BookDto> getBooksByKeyword(@PathVariable("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return authorService.findByNameContains(keyword, page, pageSize, field, order);
     }
 
     @GetMapping("/current-requests")
-    public List<RequestDto> getAllRequests() {
-        return authorService.getAllRequests();
+    public List<RequestDto> getAllRequests(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return authorService.getAllRequests(page, pageSize, field, order);
     }
 
     @GetMapping("/responded-requests")
-    public List<RespondedRequestDto> getAllRespondedRequests() {
-        return authorService.getAllRespondedRequests();
+    public List<RespondedRequestDto> getAllRespondedRequests(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return authorService.getAllRespondedRequests(page, pageSize, field, order);
+    }
+
+    @GetMapping("/current-requests/count")
+    public Integer getRequestCount() {
+        return authorService.getRequestCount();
+    }
+
+    @GetMapping("/responded-requests/count")
+    public Integer getRespondCount() {
+        return authorService.getRespondCount();
     }
 }

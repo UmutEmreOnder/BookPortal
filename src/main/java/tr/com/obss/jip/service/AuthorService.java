@@ -16,11 +16,11 @@ public interface AuthorService {
 
     List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order);
 
-    List<BookDto> getAllBooks(Integer page, Integer pageSize, String field, String order);
+    List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order);
 
     List<RespondedRequestDto> getAllRespondedRequests(Integer page, Integer pageSize, String field, String order);
 
-    List<AuthorDto> getAllAuthors(Integer page, Integer pageSize, String field, String order);
+    List<AuthorDto> getAllAuthors(String keyword, Integer page, Integer pageSize, String field, String order);
 
     void updateAuthor(Long id, CreateNewUser createNewAuthor);
 

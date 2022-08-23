@@ -30,6 +30,7 @@ import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.UserService;
 import tr.com.obss.jip.util.Helper;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -48,17 +49,18 @@ public class UserServiceImpl implements UserService {
     private final BookMapper bookMapper;
 
     private final BookService bookService;
+    private final EntityManager entityManager;
 
     @Override
-    public List<UserDto> getAllUsers(Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+    public List<UserDto> getAllUsers(String keyword, Integer page, Integer pageSize, String field, String order) {
+        if (!keyword.equals("")) {
+            log.info("Users with name's contains {} fetched", keyword);
+            return getAllContainsUsers(keyword, page, pageSize, field, order);
+        }
 
-        final Iterable<User> allUsers = userRepository.findAll(pageable);
+        List<User> userList = Helper.getAll(entityManager, page, pageSize, field, order, User.class);
 
-        List<UserDto> retList = new ArrayList<>();
-        allUsers.forEach(user -> retList.add(userMapper.mapTo(user)));
-
-        return retList;
+        return userList.stream().map(userMapper::mapTo).toList();
     }
 
     @Override
@@ -139,13 +141,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAllContainsUsers(String keyword, Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
-        final List<User> allUsers = userRepository.findUserByNameContains(keyword, pageable);
+        List<User> userList = Helper.getAllContains(entityManager, "name", keyword, page, pageSize, field, order, User.class);
 
-        List<UserDto> retList = new ArrayList<>();
-        allUsers.forEach(user -> retList.add(userMapper.mapTo(user)));
-
-        return retList;
+        return userList.stream().map(userMapper::mapTo).toList();
     }
 
     @Override

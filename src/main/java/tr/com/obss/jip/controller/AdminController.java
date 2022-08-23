@@ -39,8 +39,8 @@ public class AdminController {
 
     // User Part
     @GetMapping("/user")
-    public List<UserDto> getAllUsers(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return userService.getAllUsers(page, pageSize, field, order);
+    public List<UserDto> getAllUsers(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return userService.getAllUsers(keyword, page, pageSize, field, order);
     }
 
     @GetMapping("/user/count")
@@ -48,10 +48,6 @@ public class AdminController {
         return userService.getCount();
     }
 
-    @GetMapping("/user/like/{keyword}")
-    public List<UserDto> getAllContainsUsers(@PathVariable("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return userService.getAllContainsUsers(keyword, page, pageSize, field, order);
-    }
 
     @GetMapping("/user/{username}")
     public UserDto findUserByUsername(@PathVariable("username") String username) {
@@ -90,8 +86,8 @@ public class AdminController {
     }
 
     @GetMapping("/author")
-    public List<AuthorDto> getAllAuthors(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return authorService.getAllAuthors(page, pageSize, field, order);
+    public List<AuthorDto> getAllAuthors(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return authorService.getAllAuthors(keyword, page, pageSize, field, order);
     }
 
     @GetMapping("/author/count")
@@ -99,10 +95,6 @@ public class AdminController {
         return authorService.getCount();
     }
 
-    @GetMapping("/author/like/{keyword}")
-    public List<AuthorDto> getAllAuthorsContains(@PathVariable("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return authorService.getAllAuthorsContains(keyword, page, pageSize, field, order);
-    }
 
     @DeleteMapping("/author")
     public Boolean deleteAuthor(@RequestParam("id") Long id) {
@@ -156,10 +148,4 @@ public class AdminController {
         bookService.updateBook(id, createNewBook);
         return Boolean.TRUE;
     }
-
-    @GetMapping("/book")
-    public List<BookDto> getAllBooks() {
-        return bookService.getAllBooks();
-    }
-
 }

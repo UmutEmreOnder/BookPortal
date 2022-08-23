@@ -41,18 +41,13 @@ public class AuthorController {
     }
 
     @GetMapping("/book")
-    public List<BookDto> getAllBooks(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return authorService.getAllBooks(page, pageSize, field, order);
+    public List<BookDto> getAllBooks(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return authorService.getAllBooks(keyword, page, pageSize, field, order);
     }
 
     @GetMapping("/book/count")
     public Integer getBookCount() {
         return authorService.getBookCount();
-    }
-
-    @GetMapping("/book/like/{keyword}")
-    public List<BookDto> getBooksByKeyword(@PathVariable("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return authorService.findByNameContains(keyword, page, pageSize, field, order);
     }
 
     @GetMapping("/current-requests")

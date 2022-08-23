@@ -15,10 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -46,7 +44,7 @@ public class Book {
 
     private int favoriteCounter;
 
-    private int rate;
+    private double rate;
 
     private int rateCount;
 

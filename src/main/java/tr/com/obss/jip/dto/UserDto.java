@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
 import tr.com.obss.jip.annotations.NotNBE;
 import tr.com.obss.jip.model.Role;
@@ -22,22 +23,11 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class UserDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotNBE
-    @Length(min = 3, max = 20)
-    private String name;
-
-    @NotNBE
-    private String surname;
-
+public class UserDto extends UserSummaryDto {
     @NotNBE
     @PositiveOrZero
     @Max(120)
@@ -47,9 +37,6 @@ public class UserDto {
     @Email
     @Column(unique = true)
     private String email;
-
-    @NotNBE
-    private String username;
 
     @NotNBE
     private Date createDate;

@@ -157,4 +157,9 @@ public class AdminController {
         return Boolean.TRUE;
     }
 
+    @GetMapping("/book")
+    public List<BookDto> getAllBooks() {
+        return bookService.getAllBooks();
+    }
+
 }

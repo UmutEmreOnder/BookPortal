@@ -16,5 +16,5 @@ public class CommentDto {
 
     private String comment;
 
-    private UserCommentDto user;
+    private UserSummaryDto user;
 }

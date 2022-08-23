@@ -7,30 +7,28 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import tr.com.obss.jip.annotations.NotNBE;
-import tr.com.obss.jip.model.Role;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthorDto extends AuthorSummaryDto{
-    @NotNBE
-    private String email;
+
+public class AuthorSummaryDto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotNBE
-    private String username;
-
-    @ManyToMany
-    private List<Role> roles;
+    private String name;
 
     @NotNBE
-    private Date createDate;
+    private String surname;
+
+    @NotNBE
+    private Integer age;
 }

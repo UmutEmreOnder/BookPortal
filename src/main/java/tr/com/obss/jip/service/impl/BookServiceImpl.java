@@ -135,20 +135,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void addRating(Rating rate, Book book) {
-        int total = book.getRate() * book.getRateCount();
+        double total = book.getRate() * book.getRateCount();
 
         book.setRateCount(book.getRateCount() + 1);
         total += rate.getRate();
-        book.setRate(total / book.getRateCount());
+
+        double newRate = total / book.getRateCount();
+        book.setRate(newRate);
 
         bookRepository.save(book);
-
         ratingRepository.save(rate);
     }
 
     @Override
     public void updateRating(Rating rate, Rating oldRate, Book book) {
-        int total = book.getRate() * book.getRateCount();
+        double total = book.getRate() * book.getRateCount();
 
         total += (rate.getRate() - oldRate.getRate());
         book.setRate(total / book.getRateCount());
@@ -158,7 +159,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteRate(Book book, Rating rate) {
-        int total = book.getRate() * book.getRateCount();
+        double total = book.getRate() * book.getRateCount();
         total -= (rate.getRate());
         book.setRateCount(book.getRateCount() - 1);
 
@@ -170,5 +171,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto findById(Long id) {
         return bookMapper.mapTo(bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id)));
+    }
+
+    @Override
+    public List<BookDto> getAllBooks() {
+        return bookRepository.findAll().stream().map(bookMapper::mapTo).toList();
     }
 }

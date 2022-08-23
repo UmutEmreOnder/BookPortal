@@ -2,7 +2,7 @@ package tr.com.obss.jip.mapper;
 
 import org.mapstruct.Mapper;
 import tr.com.obss.jip.dto.BaseUserDto;
-import tr.com.obss.jip.dto.UserCommentDto;
+import tr.com.obss.jip.dto.UserSummaryDto;
 import tr.com.obss.jip.dto.UserDto;
 import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.model.Author;
@@ -13,7 +13,7 @@ import tr.com.obss.jip.model.User;
 public interface UserMapper {
 
     UserDto mapTo(User user);
-    UserCommentDto map(User user);
+    UserSummaryDto map(User user);
 
     User mapTo(UserDto userDto);
 

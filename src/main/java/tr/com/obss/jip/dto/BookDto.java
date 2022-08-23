@@ -37,15 +37,12 @@ public class BookDto {
 
     private int favoriteCounter;
 
-    private int rate;
+    private double rate;
 
     private int rateCount;
 
-    @OneToMany
-    private List<CommentDto> comments;
-
     @ManyToOne
-    private AuthorDto author;
+    private AuthorSummaryDto author;
 
     private Genre genre;
 

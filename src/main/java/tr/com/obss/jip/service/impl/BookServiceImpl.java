@@ -2,8 +2,6 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
@@ -23,7 +21,11 @@ import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.GenreService;
 import tr.com.obss.jip.util.Helper;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -37,17 +39,17 @@ public class BookServiceImpl implements BookService {
     private final UserRepository userRepository;
     private final GenreService genreService;
     private final RatingRepository ratingRepository;
+    private final EntityManager entityManager;
 
     @Override
-    public List<BookDto> getAllBooks(Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+    public List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order) {
+        if (!keyword.equals("")) {
+            return findByNameContains(keyword, page, pageSize, field, order);
+        }
 
-        final Iterable<Book> books = bookRepository.findAll(pageable);
+        List<Book> bookList = Helper.getAll(entityManager, page, pageSize, field, order, Book.class);
 
-        List<BookDto> retList = new ArrayList<>();
-        books.forEach(book -> retList.add(bookMapper.mapTo(book)));
-
-        return retList;
+        return bookList.stream().map(bookMapper::mapTo).toList();
     }
 
     @Override
@@ -113,7 +115,7 @@ public class BookServiceImpl implements BookService {
         }
 
         for (Rating rating : ratingRepository.findAll()) {
-            if(rating.getBook() == book) {
+            if (rating.getBook() == book) {
                 ratingRepository.delete(rating);
             }
         }
@@ -123,14 +125,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> findByNameContains(String keyword, Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+        List<Book> books = Helper.getAllContains(entityManager, "name", keyword, page, pageSize, field, order, Book.class);
 
-        final List<Book> books = bookRepository.findBooksByNameContains(keyword, pageable);
-
-        List<BookDto> retList = new ArrayList<>();
-        books.forEach(book -> retList.add(bookMapper.mapTo(book)));
-
-        return retList;
+        return books.stream().map(bookMapper::mapTo).toList();
     }
 
     @Override
@@ -173,8 +170,5 @@ public class BookServiceImpl implements BookService {
         return bookMapper.mapTo(bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id)));
     }
 
-    @Override
-    public List<BookDto> getAllBooks() {
-        return bookRepository.findAll().stream().map(bookMapper::mapTo).toList();
-    }
+
 }

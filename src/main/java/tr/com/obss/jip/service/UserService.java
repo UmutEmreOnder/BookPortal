@@ -10,7 +10,7 @@ import tr.com.obss.jip.model.Rating;
 import java.util.List;
 
 public interface UserService {
-    List<UserDto> getAllUsers(Integer page, Integer pageSize, String field, String order);
+    List<UserDto> getAllUsers(String keyword, Integer page, Integer pageSize, String field, String order);
 
     UserDto findByUsername(String username);
 

@@ -29,6 +29,7 @@ import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
+import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BaseUserRepository;
 import tr.com.obss.jip.repository.BookRepository;
@@ -40,6 +41,7 @@ import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RoleService;
 import tr.com.obss.jip.util.Helper;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +65,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final BookRepository bookRepository;
     private final RequestRepository requestRepository;
     private final RespondedRequestRepository respondedRequestRepository;
+    private final EntityManager entityManager;
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest) {
@@ -95,7 +98,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<BookDto> getAllBooks(Integer page, Integer pageSize, String field, String order) {
+    public List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order) {
+        if (!keyword.equals("")) {
+            return findByNameContains(keyword, page, pageSize, field, order);
+        }
+
         Pageable pageable = Helper.getPagable(page, pageSize, field, order);
         return bookRepository.findBooksByAuthor(getAuthenticatedAuthor(), pageable).stream().map(bookMapper::mapTo).toList();
     }
@@ -107,15 +114,14 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDto> getAllAuthors(Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+    public List<AuthorDto> getAllAuthors(String keyword, Integer page, Integer pageSize, String field, String order) {
+        if (!keyword.equals("")) {
+            return getAllAuthorsContains(keyword, page, pageSize, field, order);
+        }
 
-        Iterable<Author> authors = authorRepository.findAll(pageable);
+        List<Author> userList = Helper.getAll(entityManager, page, pageSize, field, order, Author.class);
 
-        List<AuthorDto> authorDtos = new ArrayList<>();
-        authors.forEach(author -> authorDtos.add(authorMapper.mapTo(author)));
-
-        return authorDtos;
+        return userList.stream().map(authorMapper::mapTo).toList();
     }
 
     @Override
@@ -158,14 +164,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<AuthorDto> getAllAuthorsContains(String keyword, Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
+        List<Author> books = Helper.getAllContains(entityManager, "name", keyword, page, pageSize, field, order, Author.class);
 
-        final List<Author> allUsers = authorRepository.findAuthorsByNameContains(keyword, pageable);
-
-        List<AuthorDto> retList = new ArrayList<>();
-        allUsers.forEach(author -> retList.add(authorMapper.mapTo(author)));
-
-        return retList;
+        return books.stream().map(authorMapper::mapTo).toList();
     }
 
     @Override

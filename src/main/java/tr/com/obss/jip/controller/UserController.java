@@ -49,8 +49,8 @@ public class UserController {
     }
 
     @GetMapping("/book")
-    public List<BookDto> getAllBooks(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return bookService.getAllBooks(page, pageSize, field, order);
+    public List<BookDto> getAllBooks(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
+        return bookService.getAllBooks(keyword, page, pageSize, field, order);
     }
 
     @GetMapping("/book/count")
@@ -77,11 +77,6 @@ public class UserController {
     @DeleteMapping("/comment")
     public Boolean deleteComment(@RequestParam("id") Long id) {
         return commentService.deleteComment(id);
-    }
-
-    @GetMapping("/book/like/{keyword}")
-    public List<BookDto> findBooksByKeyword(@PathVariable("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return bookService.findByNameContains(keyword, page, pageSize, field, order);
     }
 
     @PostMapping("/rate/{bookId}")

@@ -105,8 +105,8 @@ public class AdminController {
 
     // AddingBookRequest Part
     @GetMapping("/request")
-    public List<RequestDto> getAllRequest(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return requestService.getAllRequests(page, pageSize, field, order);
+    public List<RequestDto> getAllRequest(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order, @RequestParam(value = "author", required = false) List<String> authors, @RequestParam(value = "genre", required = false) List<String> genres) {
+        return requestService.getAllRequests(page, pageSize, field, order, authors, genres);
     }
 
     @GetMapping("/request/count")

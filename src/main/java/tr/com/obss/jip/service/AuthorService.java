@@ -14,11 +14,11 @@ public interface AuthorService {
 
     void createNewAuthor(CreateNewUser createNewAuthor);
 
-    List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order);
+    List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order, List<String> genres);
 
-    List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order);
+    List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order, List<String> genres);
 
-    List<RespondedRequestDto> getAllRespondedRequests(Integer page, Integer pageSize, String field, String order);
+    List<RespondedRequestDto> getAllRespondedRequests(Integer page, Integer pageSize, String field, String order, List<String> responses);
 
     List<AuthorDto> getAllAuthors(String keyword, Integer page, Integer pageSize, String field, String order);
 
@@ -26,9 +26,6 @@ public interface AuthorService {
 
     void deleteAuthorById(Long id);
 
-    List<BookDto> findByNameContains(String keyword, Integer page, Integer pageSize, String field, String order);
-
-    List<AuthorDto> getAllAuthorsContains(String keyword, Integer page, Integer pageSize, String field, String order);
 
     AuthorDto findByUsername(String username);
 

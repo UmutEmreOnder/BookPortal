@@ -2,9 +2,7 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,12 +25,12 @@ import tr.com.obss.jip.model.AddingBookRequest;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Book;
+import tr.com.obss.jip.model.RespondedBookRequest;
 import tr.com.obss.jip.model.Role;
 import tr.com.obss.jip.model.RoleType;
-import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BaseUserRepository;
-import tr.com.obss.jip.repository.BookRepository;
+import tr.com.obss.jip.repository.GenreRepository;
 import tr.com.obss.jip.repository.RequestRepository;
 import tr.com.obss.jip.repository.RespondedRequestRepository;
 import tr.com.obss.jip.service.AuthorService;
@@ -45,7 +43,6 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -57,15 +54,15 @@ public class AuthorServiceImpl implements AuthorService {
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
     private final RequestMapper requestMapper;
-    private final BookMapper bookMapper;
     private final RespondedRequestMapper respondedRequestMapper;
     private final RequestService requestService;
     private final BaseUserRepository baseUserRepository;
     private final BookService bookService;
-    private final BookRepository bookRepository;
     private final RequestRepository requestRepository;
     private final RespondedRequestRepository respondedRequestRepository;
     private final EntityManager entityManager;
+    private final GenreRepository genreRepository;
+    private final BookMapper bookMapper;
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest) {
@@ -92,34 +89,35 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
-        return requestRepository.findAddingBookRequestsByAuthor(getAuthenticatedAuthor(), pageable).stream().map(requestMapper::mapTo).toList();
+    public List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order, List<String> genres) {
+        List<String> author = new ArrayList<>();
+        author.add(getAuthenticatedAuthor().getUsername());
+
+        List<AddingBookRequest> requestList = Helper.getBooksOrRequests(entityManager, "bookName", "", page, pageSize, field, order, AddingBookRequest.class, author, authorRepository, genres, genreRepository);
+
+        return requestList.stream().map(requestMapper::mapTo).toList();
     }
 
     @Override
-    public List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order) {
-        if (!keyword.equals("")) {
-            return findByNameContains(keyword, page, pageSize, field, order);
-        }
+    public List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order, List<String> genres) {
+        List<String> author = new ArrayList<>();
+        author.add(getAuthenticatedAuthor().getUsername());
 
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
-        return bookRepository.findBooksByAuthor(getAuthenticatedAuthor(), pageable).stream().map(bookMapper::mapTo).toList();
+        List<Book> bookList = Helper.getBooksOrRequests(entityManager, "name", keyword, page, pageSize, field, order, Book.class, author, authorRepository, genres, genreRepository);
+
+        return bookList.stream().map(bookMapper::mapTo).toList();
     }
 
     @Override
-    public List<RespondedRequestDto> getAllRespondedRequests(Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
-        return respondedRequestRepository.findRespondedBookRequestByAuthor(getAuthenticatedAuthor(), pageable).stream().map(respondedRequestMapper::mapTo).toList();
+    public List<RespondedRequestDto> getAllRespondedRequests(Integer page, Integer pageSize, String field, String order, List<String> responses) {
+        List<RespondedBookRequest> respondedBookRequestList = Helper.getResponses(entityManager, page, pageSize, field, order, responses, getAuthenticatedAuthor());
+
+        return respondedBookRequestList.stream().map(respondedRequestMapper::mapTo).toList();
     }
 
     @Override
     public List<AuthorDto> getAllAuthors(String keyword, Integer page, Integer pageSize, String field, String order) {
-        if (!keyword.equals("")) {
-            return getAllAuthorsContains(keyword, page, pageSize, field, order);
-        }
-
-        List<Author> userList = Helper.getAll(entityManager, page, pageSize, field, order, Author.class);
+        List<Author> userList = Helper.getAll(entityManager, "name", keyword, page, pageSize, field, order, Author.class);
 
         return userList.stream().map(authorMapper::mapTo).toList();
     }
@@ -154,19 +152,6 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         authorRepository.deleteById(id);
-    }
-
-    @Override
-    public List<BookDto> findByNameContains(String keyword, Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
-        return bookRepository.findBooksByAuthorAndNameContains(getAuthenticatedAuthor(),keyword, pageable).stream().map(bookMapper::mapTo).toList();
-    }
-
-    @Override
-    public List<AuthorDto> getAllAuthorsContains(String keyword, Integer page, Integer pageSize, String field, String order) {
-        List<Author> books = Helper.getAllContains(entityManager, "name", keyword, page, pageSize, field, order, Author.class);
-
-        return books.stream().map(authorMapper::mapTo).toList();
     }
 
     @Override

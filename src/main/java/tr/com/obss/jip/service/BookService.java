@@ -16,8 +16,6 @@ public interface BookService {
 
     void deleteBook(Long id);
 
-    List<BookDto> findByNameContains(String keyword, Integer page, Integer pageSize, String field, String order);
-
     void addRating(Rating rate, Book book);
 
     void updateRating(Rating rate, Rating oldRate, Book book);
@@ -26,7 +24,7 @@ public interface BookService {
 
     BookDto findById(Long id);
 
-    List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order);
+    List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order, List<String> authors, List<String> genres);
 
     Long getCount();
 }

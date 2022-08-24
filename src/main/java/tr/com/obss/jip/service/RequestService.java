@@ -9,11 +9,11 @@ import java.util.List;
 public interface RequestService {
     void addNewRequest(CreateNewRequest createNewRequest, Author author);
 
-    List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order);
-
     void acceptRequest(Long id);
 
     void denyRequest(Long id);
 
     Long getCount();
+
+    List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order, List<String> authors, List<String> genres);
 }

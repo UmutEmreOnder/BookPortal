@@ -12,14 +12,17 @@ import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.model.AddingBookRequest;
 import tr.com.obss.jip.model.Author;
+import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.RespondType;
 import tr.com.obss.jip.repository.AuthorRepository;
+import tr.com.obss.jip.repository.GenreRepository;
 import tr.com.obss.jip.repository.RequestRepository;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.RespondedRequestService;
 import tr.com.obss.jip.util.Helper;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +37,8 @@ public class RequestServiceImpl implements RequestService {
     private final BookService bookService;
     private final BookMapper bookMapper;
     private final RespondedRequestService respondedRequestService;
+    private final EntityManager entityManager;
+    private final GenreRepository genreRepository;
 
     @Override
     public void addNewRequest(CreateNewRequest createNewRequest, Author author) {
@@ -47,15 +52,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable = Helper.getPagable(page, pageSize, field, order);
-
-        Iterable<AddingBookRequest> requests = requestRepository.findAll(pageable);
-        List<RequestDto> retList = new ArrayList<>();
-
-        requests.forEach(request -> retList.add(requestMapper.mapTo(request)));
-
-        return retList;
+    public List<RequestDto> getAllRequests(Integer page, Integer pageSize, String field, String order, List<String> authors, List<String> genres) {
+        List<AddingBookRequest> requestList = Helper.getBooksOrRequests(entityManager, "bookName", "", page, pageSize, field, order, AddingBookRequest.class, authors, authorRepository, genres, genreRepository);
+        return requestList.stream().map(requestMapper::mapTo).toList();
     }
 
     @Override

@@ -7,6 +7,7 @@ import tr.com.obss.jip.dto.BookDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
 import tr.com.obss.jip.exception.BookAlreadyExistException;
 import tr.com.obss.jip.exception.BookNotFoundException;
+import tr.com.obss.jip.mapper.AuthorMapper;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.model.Author;
 import tr.com.obss.jip.model.Book;
@@ -14,7 +15,9 @@ import tr.com.obss.jip.model.Genre;
 import tr.com.obss.jip.model.GenreType;
 import tr.com.obss.jip.model.Rating;
 import tr.com.obss.jip.model.User;
+import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.BookRepository;
+import tr.com.obss.jip.repository.GenreRepository;
 import tr.com.obss.jip.repository.RatingRepository;
 import tr.com.obss.jip.repository.UserRepository;
 import tr.com.obss.jip.service.BookService;
@@ -22,10 +25,6 @@ import tr.com.obss.jip.service.GenreService;
 import tr.com.obss.jip.util.Helper;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,15 +39,12 @@ public class BookServiceImpl implements BookService {
     private final GenreService genreService;
     private final RatingRepository ratingRepository;
     private final EntityManager entityManager;
+    private final AuthorRepository authorRepository;
+    private final GenreRepository genreRepository;
 
     @Override
-    public List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order) {
-        if (!keyword.equals("")) {
-            return findByNameContains(keyword, page, pageSize, field, order);
-        }
-
-        List<Book> bookList = Helper.getAll(entityManager, page, pageSize, field, order, Book.class);
-
+    public List<BookDto> getAllBooks(String keyword, Integer page, Integer pageSize, String field, String order, List<String> authors, List<String> genres) {
+        List<Book> bookList = Helper.getBooksOrRequests(entityManager, "name", keyword, page, pageSize, field, order, Book.class, authors, authorRepository, genres, genreRepository);
         return bookList.stream().map(bookMapper::mapTo).toList();
     }
 
@@ -121,13 +117,6 @@ public class BookServiceImpl implements BookService {
         }
 
         bookRepository.delete(book);
-    }
-
-    @Override
-    public List<BookDto> findByNameContains(String keyword, Integer page, Integer pageSize, String field, String order) {
-        List<Book> books = Helper.getAllContains(entityManager, "name", keyword, page, pageSize, field, order, Book.class);
-
-        return books.stream().map(bookMapper::mapTo).toList();
     }
 
     @Override

@@ -41,8 +41,8 @@ public class AuthorController {
     }
 
     @GetMapping("/book")
-    public List<BookDto> getAllBooks(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return authorService.getAllBooks(keyword, page, pageSize, field, order);
+    public List<BookDto> getAllBooks(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order, @RequestParam(value = "genre", required = false) List<String> genres) {
+        return authorService.getAllBooks(keyword, page, pageSize, field, order, genres);
     }
 
     @GetMapping("/book/count")
@@ -51,13 +51,13 @@ public class AuthorController {
     }
 
     @GetMapping("/current-requests")
-    public List<RequestDto> getAllRequests(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return authorService.getAllRequests(page, pageSize, field, order);
+    public List<RequestDto> getAllRequests(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order, @RequestParam(value = "genre", required = false) List<String> genres) {
+        return authorService.getAllRequests(page, pageSize, field, order, genres);
     }
 
     @GetMapping("/responded-requests")
-    public List<RespondedRequestDto> getAllRespondedRequests(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return authorService.getAllRespondedRequests(page, pageSize, field, order);
+    public List<RespondedRequestDto> getAllRespondedRequests(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order,  @RequestParam(value = "respond", required = false) List<String> responses) {
+        return authorService.getAllRespondedRequests(page, pageSize, field, order, responses);
     }
 
     @GetMapping("/current-requests/count")

@@ -53,12 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAllUsers(String keyword, Integer page, Integer pageSize, String field, String order) {
-        if (!keyword.equals("")) {
-            log.info("Users with name's contains {} fetched", keyword);
-            return getAllContainsUsers(keyword, page, pageSize, field, order);
-        }
-
-        List<User> userList = Helper.getAll(entityManager, page, pageSize, field, order, User.class);
+        List<User> userList = Helper.getAll(entityManager, "name", keyword, page, pageSize, field, order, User.class);
 
         return userList.stream().map(userMapper::mapTo).toList();
     }
@@ -137,13 +132,6 @@ public class UserServiceImpl implements UserService {
         transferFields(createNewUser, userExist);
 
         userRepository.save(userExist);
-    }
-
-    @Override
-    public List<UserDto> getAllContainsUsers(String keyword, Integer page, Integer pageSize, String field, String order) {
-        List<User> userList = Helper.getAllContains(entityManager, "name", keyword, page, pageSize, field, order, User.class);
-
-        return userList.stream().map(userMapper::mapTo).toList();
     }
 
     @Override

@@ -49,8 +49,8 @@ public class UserController {
     }
 
     @GetMapping("/book")
-    public List<BookDto> getAllBooks(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order) {
-        return bookService.getAllBooks(keyword, page, pageSize, field, order);
+    public List<BookDto> getAllBooks(@RequestParam("keyword") String keyword, @RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("field") String field, @RequestParam("order") String order, @RequestParam(value = "author", required = false) List<String> authors, @RequestParam(value = "genre", required = false) List<String> genres) {
+        return bookService.getAllBooks(keyword, page, pageSize, field, order, authors, genres);
     }
 
     @GetMapping("/book/count")

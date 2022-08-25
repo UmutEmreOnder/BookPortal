@@ -147,8 +147,8 @@ public class AuthorServiceImpl implements AuthorService {
     public void deleteAuthorById(Long id) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
 
-        for (Book book : author.getBooks()) {
-            bookService.deleteBook(book.getId());
+        for (int i = 0; i < author.getBooks().size(); i++) {
+            bookService.deleteBook(author.getBooks().get(i).getId());
         }
 
         authorRepository.deleteById(id);

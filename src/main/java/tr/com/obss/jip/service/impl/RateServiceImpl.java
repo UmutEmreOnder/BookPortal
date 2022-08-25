@@ -23,9 +23,6 @@ import tr.com.obss.jip.service.UserService;
 @RequiredArgsConstructor
 public class RateServiceImpl implements RateService {
     private final BookRepository bookRepository;
-    private final UserRepository userRepository;
-    private final RatingRepository ratingRepository;
-    private final BookService bookService;
     private final UserService userService;
 
     @Override
@@ -35,20 +32,9 @@ public class RateServiceImpl implements RateService {
                 .builder()
                 .rate(rate)
                 .book(book)
-                .user(getAuthenticatedUser())
                 .build();
 
         userService.addRating(rating, book);
     }
 
-    private User getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            String currentUserName = authentication.getName();
-            return userRepository.findUserByUsername(currentUserName).orElseThrow(UserNotFoundException::new);
-        }
-
-        return null;
-    }
 }

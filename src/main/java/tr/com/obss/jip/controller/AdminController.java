@@ -20,6 +20,7 @@ import tr.com.obss.jip.dto.create.CreateNewUser;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BaseUserService;
 import tr.com.obss.jip.service.BookService;
+import tr.com.obss.jip.service.CommentService;
 import tr.com.obss.jip.service.RequestService;
 import tr.com.obss.jip.service.UserService;
 
@@ -36,6 +37,7 @@ public class AdminController {
     private final AuthorService authorService;
     private final RequestService requestService;
     private final BaseUserService baseUserService;
+    private final CommentService commentService;
 
     // User Part
     @GetMapping("/user")
@@ -147,5 +149,11 @@ public class AdminController {
     public Boolean updateBook(@RequestParam("id") Long id, @RequestBody @Valid CreateNewBook createNewBook) {
         bookService.updateBook(id, createNewBook);
         return Boolean.TRUE;
+    }
+
+
+    @DeleteMapping("/comment")
+    public Boolean deleteComment(@RequestParam("id") Long id) {
+        return commentService.deleteCommentAdmin(id);
     }
 }

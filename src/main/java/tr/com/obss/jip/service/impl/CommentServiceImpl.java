@@ -76,6 +76,16 @@ public class CommentServiceImpl implements CommentService {
         return comments.stream().map(commentMapper::mapTo).toList();
     }
 
+    @Override
+    public Boolean deleteCommentAdmin(Long id) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
+
+        comment.getUser().getComments().remove(comment);
+        comment.getBook().getComments().remove(comment);
+        commentRepository.deleteById(id);
+        return true;
+    }
+
     private User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

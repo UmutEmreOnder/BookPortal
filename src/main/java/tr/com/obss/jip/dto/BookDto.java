@@ -41,6 +41,15 @@ public class BookDto {
 
     private int rateCount;
 
+    @NotNBE
+    private int page;
+
+    @NotNBE
+    private String description;
+
+    @NotNBE
+    private String photoURL;
+
     @ManyToOne
     private AuthorSummaryDto author;
 

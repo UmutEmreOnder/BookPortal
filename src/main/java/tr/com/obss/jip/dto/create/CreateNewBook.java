@@ -23,4 +23,13 @@ public class CreateNewBook {
     private Author author;
 
     private String genreName;
+
+    @NotNBE
+    private int page;
+
+    @NotNBE
+    private String description;
+
+    @NotNBE
+    private String photoURL;
 }

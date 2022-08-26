@@ -35,6 +35,15 @@ public class RequestDto {
     private AuthorDto author;
 
     @NotNBE
+    private int page;
+
+    @NotNBE
+    private String description;
+
+    @NotNBE
+    private String photoURL;
+
+    @NotNBE
     private String genreName;
 
     @NotNBE

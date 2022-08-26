@@ -48,6 +48,12 @@ public class Book {
 
     private int rateCount;
 
+    private int page;
+
+    private String description;
+
+    private String photoURL;
+
     @NotNBE
     private Date createDate;
 

@@ -34,8 +34,8 @@ public class AppConfig implements WebMvcConfigurer {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("bookportaljip@gmail.com");
-        mailSender.setPassword("ucpyfhjgjghrjtky");
+        mailSender.setUsername("bookportaljip2022@gmail.com");
+        mailSender.setPassword("hidden");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

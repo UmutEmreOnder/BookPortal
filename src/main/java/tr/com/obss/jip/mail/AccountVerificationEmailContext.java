@@ -22,7 +22,7 @@ public class AccountVerificationEmailContext extends AbstractEmailContext {
         put("firstName", customer.getName());
         setTemplateLocation("emails/email-verification");
         setSubject("Complete your registration");
-        setFrom("bookportaljip@gmail.com");
+        setFrom("bookportaljip2022@gmail.com");
         setTo(customer.getEmail());
     }
 

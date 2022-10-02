@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
     private final String username;
@@ -17,7 +16,7 @@ public class MyUserDetails implements UserDetails {
     public MyUserDetails(String username, String password, List<String> roles, Boolean enabled) {
         this.username = username;
         this.password = password;
-        this.authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        this.authorities = roles.stream().map(SimpleGrantedAuthority::new).toList();
         this.enabled = enabled;
     }
 

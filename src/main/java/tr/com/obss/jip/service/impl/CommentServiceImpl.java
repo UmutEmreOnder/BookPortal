@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDto> getComments(Long bookId, Integer page, Integer pageSize) {
-        Book book =  bookRepository.findById(bookId).orElseThrow(() -> new BookNotFoundException(bookId));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new BookNotFoundException(bookId));
         Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("id").descending());
 
         List<Comment> comments = commentRepository.findAllByBook(book, pageable);
@@ -94,6 +94,6 @@ public class CommentServiceImpl implements CommentService {
             return userRepository.findUserByUsername(currentUserName).orElseThrow(UserNotFoundException::new);
         }
 
-        return null;
+        throw new UserNotFoundException();
     }
 }

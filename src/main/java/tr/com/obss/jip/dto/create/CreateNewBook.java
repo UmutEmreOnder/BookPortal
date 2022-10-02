@@ -1,10 +1,6 @@
 package tr.com.obss.jip.dto.create;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import tr.com.obss.jip.annotations.NotNBE;
 import tr.com.obss.jip.model.Author;
 

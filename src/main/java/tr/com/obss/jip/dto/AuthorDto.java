@@ -1,7 +1,6 @@
 package tr.com.obss.jip.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,9 +8,6 @@ import lombok.experimental.SuperBuilder;
 import tr.com.obss.jip.annotations.NotNBE;
 import tr.com.obss.jip.model.Role;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +17,7 @@ import java.util.List;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthorDto extends AuthorSummaryDto{
+public class AuthorDto extends AuthorSummaryDto {
     @NotNBE
     private String email;
 

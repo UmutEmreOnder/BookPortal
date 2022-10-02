@@ -2,9 +2,6 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +17,6 @@ import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.UserMapper;
 import tr.com.obss.jip.model.BaseUser;
 import tr.com.obss.jip.model.Book;
-import tr.com.obss.jip.model.Comment;
 import tr.com.obss.jip.model.Rating;
 import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.BaseUserRepository;
@@ -31,9 +27,6 @@ import tr.com.obss.jip.service.UserService;
 import tr.com.obss.jip.util.Helper;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,7 +71,7 @@ public class UserServiceImpl implements UserService {
     public void addFavoriteBook(Long id) {
         User user = getAuthenticatedUser();
 
-        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));;
+        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
         book.setFavoriteCounter(book.getFavoriteCounter() + 1);
         user.getFavoriteList().add(book);
 
@@ -153,7 +146,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
-        for(Book book : bookRepository.findAll()) {
+        for (Book book : bookRepository.findAll()) {
             if (user.getRates().containsKey(book)) {
                 bookService.deleteRate(book, user.getRates().get(book));
             }
@@ -206,6 +199,6 @@ public class UserServiceImpl implements UserService {
             return userRepository.findUserByUsername(currentUserName).orElseThrow(UserNotFoundException::new);
         }
 
-        return null;
+        throw new UserNotFoundException();
     }
 }

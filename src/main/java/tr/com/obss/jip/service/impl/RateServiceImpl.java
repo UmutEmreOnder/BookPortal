@@ -2,19 +2,11 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.exception.BookNotFoundException;
-import tr.com.obss.jip.exception.UserNotFoundException;
 import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.Rating;
-import tr.com.obss.jip.model.User;
 import tr.com.obss.jip.repository.BookRepository;
-import tr.com.obss.jip.repository.RatingRepository;
-import tr.com.obss.jip.repository.UserRepository;
-import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RateService;
 import tr.com.obss.jip.service.UserService;
 

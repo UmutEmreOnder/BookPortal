@@ -1,16 +1,9 @@
 package tr.com.obss.jip.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import tr.com.obss.jip.exception.AuthorNotFoundException;
 import tr.com.obss.jip.exception.GenreNotFoundException;
-import tr.com.obss.jip.model.Author;
-import tr.com.obss.jip.model.Genre;
-import tr.com.obss.jip.model.GenreType;
-import tr.com.obss.jip.model.RespondType;
-import tr.com.obss.jip.model.RespondedBookRequest;
+import tr.com.obss.jip.model.*;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.GenreRepository;
 
@@ -21,27 +14,22 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
 public class Helper {
-    public static Pageable getPagable(Integer page, Integer pageSize, String field, String order) {
-        Pageable pageable;
-        if (order.equals("descend")) {
-            pageable = PageRequest.of(page - 1, pageSize, Sort.by(field).descending());
-        } else {
-            pageable = PageRequest.of(page - 1, pageSize, Sort.by(field).ascending());
-        }
+    private Helper() {
 
-        return pageable;
     }
+    private static final String ASCEND = "ascend";
 
     public static <T> List<T> getAll(EntityManager entityManager, String searchField, String keyword, Integer page, Integer pageSize, String sortField, String order, Class<T> tClass) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(tClass);
         Root<T> root = criteriaQuery.from(tClass);
 
-        if (order.equals("ascend")) {
+        if (order.equals(ASCEND)) {
             criteriaQuery.orderBy(criteriaBuilder.asc(root.get(sortField)));
         } else {
             criteriaQuery.orderBy(criteriaBuilder.desc(root.get(sortField)));
@@ -66,7 +54,7 @@ public class Helper {
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(tClass);
         Root<T> root = criteriaQuery.from(tClass);
 
-        if (order.equals("ascend")) {
+        if (order.equals(ASCEND)) {
             criteriaQuery.orderBy(criteriaBuilder.asc(root.get(sortField)));
         } else {
             criteriaQuery.orderBy(criteriaBuilder.desc(root.get(sortField)));
@@ -88,7 +76,7 @@ public class Helper {
             }
         }
 
-        CriteriaQuery<T> select = criteriaQuery.select(root).where(predicates.toArray(new Predicate[] {}));
+        CriteriaQuery<T> select = criteriaQuery.select(root).where(predicates.toArray(new Predicate[]{}));
         TypedQuery<T> typedQuery = entityManager.createQuery(select);
 
         typedQuery.setFirstResult((page - 1) * pageSize);
@@ -104,7 +92,7 @@ public class Helper {
         CriteriaQuery<RespondedBookRequest> criteriaQuery = criteriaBuilder.createQuery(RespondedBookRequest.class);
         Root<RespondedBookRequest> root = criteriaQuery.from(RespondedBookRequest.class);
 
-        if (order.equals("ascend")) {
+        if (order.equals(ASCEND)) {
             criteriaQuery.orderBy(criteriaBuilder.asc(root.get(sortField)));
         } else {
             criteriaQuery.orderBy(criteriaBuilder.desc(root.get(sortField)));
@@ -118,7 +106,7 @@ public class Helper {
             predicates.add(root.get("respond").in(respondTypes));
         }
 
-        CriteriaQuery<RespondedBookRequest> select = criteriaQuery.select(root).where(predicates.toArray(new Predicate[] {}));
+        CriteriaQuery<RespondedBookRequest> select = criteriaQuery.select(root).where(predicates.toArray(new Predicate[]{}));
         TypedQuery<RespondedBookRequest> typedQuery = entityManager.createQuery(select);
 
         typedQuery.setFirstResult((page - 1) * pageSize);
@@ -128,17 +116,17 @@ public class Helper {
     }
 
     private static List<Genre> getGenres(List<String> genres, GenreRepository genreRepository) {
-        if (genres == null) return null;
+        if (genres == null) return Collections.emptyList();
         return genres.stream().map(genreName -> genreRepository.findGenreByName(GenreType.valueOf(genreName)).orElseThrow(() -> new GenreNotFoundException(genreName))).toList();
     }
 
     private static List<Author> getAuthors(List<String> names, AuthorRepository authorRepository) {
-        if (names == null) return null;
+        if (names == null) return Collections.emptyList();
         return names.stream().map(username -> authorRepository.findAuthorByUsername(username).orElseThrow(() -> new AuthorNotFoundException(username))).toList();
     }
 
     private static List<RespondType> getRespondTypes(List<String> responses) {
-        if (responses == null) return null;
+        if (responses == null) return Collections.emptyList();
 
         return responses.stream().map(RespondType::valueOf).toList();
     }

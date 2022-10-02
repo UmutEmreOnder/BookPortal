@@ -2,7 +2,6 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.dto.create.CreateNewBook;
@@ -12,7 +11,6 @@ import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.model.AddingBookRequest;
 import tr.com.obss.jip.model.Author;
-import tr.com.obss.jip.model.Book;
 import tr.com.obss.jip.model.RespondType;
 import tr.com.obss.jip.repository.AuthorRepository;
 import tr.com.obss.jip.repository.GenreRepository;
@@ -23,7 +21,6 @@ import tr.com.obss.jip.service.RespondedRequestService;
 import tr.com.obss.jip.util.Helper;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

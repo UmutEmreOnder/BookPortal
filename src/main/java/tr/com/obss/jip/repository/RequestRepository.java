@@ -2,9 +2,7 @@ package tr.com.obss.jip.repository;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import tr.com.obss.jip.dto.RequestDto;
 import tr.com.obss.jip.model.AddingBookRequest;
 import tr.com.obss.jip.model.Author;
 

@@ -4,9 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import tr.com.obss.jip.annotations.NotNBE;
-import tr.com.obss.jip.model.Author;
-
-import javax.persistence.OneToOne;
 
 @Getter
 @Setter

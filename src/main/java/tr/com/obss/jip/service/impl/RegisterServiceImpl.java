@@ -78,7 +78,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public Boolean verifyToken(String token){
+    public Boolean verifyToken(String token) {
         try {
             verifyUser(token);
         } catch (InvalidTokenException e) {
@@ -92,7 +92,7 @@ public class RegisterServiceImpl implements RegisterService {
     public void sendNewEmail(String email) {
         User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
 
-        if (user.getEnabled()) {
+        if (Boolean.TRUE.equals(user.getEnabled())) {
             throw new UserAlreadyExistException(email);
         }
 

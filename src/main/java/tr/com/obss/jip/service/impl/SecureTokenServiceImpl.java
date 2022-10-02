@@ -22,12 +22,9 @@ import java.util.Optional;
 public class SecureTokenServiceImpl implements SecureTokenService {
     private static final BytesKeyGenerator DEFAULT_TOKEN_GENERATOR = KeyGenerators.secureRandom(15);
     private static final Charset US_ASCII = StandardCharsets.US_ASCII;
-
+    private final SecureTokenRepository secureTokenRepository;
     @Value("${jdj.secure.token.validity}")
     private int tokenValidityInSeconds;
-
-    private final SecureTokenRepository secureTokenRepository;
-
 
     @Override
     public SecureToken createSecureToken() {

@@ -1,6 +1,5 @@
 package tr.com.obss.jip.mail;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,13 +20,14 @@ public abstract class AbstractEmailContext {
     private String templateLocation;
     private Map<String, Object> context;
 
-    public AbstractEmailContext() {
+    protected AbstractEmailContext() {
         this.context = new HashMap<>();
     }
 
-    public <T> void init(T context){}
+    public <T> void init(T context) {
+    }
 
     public Object put(String key, Object value) {
-        return key == null ? null : this.context.put(key.intern(),value);
+        return key == null ? null : this.context.put(key.intern(), value);
     }
 }

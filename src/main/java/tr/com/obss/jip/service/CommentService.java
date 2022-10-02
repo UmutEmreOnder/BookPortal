@@ -9,6 +9,7 @@ public interface CommentService {
     void addComment(Long bookId, CreateNewComment comment);
 
     boolean deleteComment(Long id);
+
     List<CommentDto> getComments(Long bookId, Integer page, Integer pageSize);
 
     Boolean deleteCommentAdmin(Long id);

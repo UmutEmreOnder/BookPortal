@@ -2,7 +2,6 @@ package tr.com.obss.jip.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,18 +20,8 @@ import tr.com.obss.jip.mapper.AuthorMapper;
 import tr.com.obss.jip.mapper.BookMapper;
 import tr.com.obss.jip.mapper.RequestMapper;
 import tr.com.obss.jip.mapper.RespondedRequestMapper;
-import tr.com.obss.jip.model.AddingBookRequest;
-import tr.com.obss.jip.model.Author;
-import tr.com.obss.jip.model.BaseUser;
-import tr.com.obss.jip.model.Book;
-import tr.com.obss.jip.model.RespondedBookRequest;
-import tr.com.obss.jip.model.Role;
-import tr.com.obss.jip.model.RoleType;
-import tr.com.obss.jip.repository.AuthorRepository;
-import tr.com.obss.jip.repository.BaseUserRepository;
-import tr.com.obss.jip.repository.GenreRepository;
-import tr.com.obss.jip.repository.RequestRepository;
-import tr.com.obss.jip.repository.RespondedRequestRepository;
+import tr.com.obss.jip.model.*;
+import tr.com.obss.jip.repository.*;
 import tr.com.obss.jip.service.AuthorService;
 import tr.com.obss.jip.service.BookService;
 import tr.com.obss.jip.service.RequestService;
@@ -195,6 +184,6 @@ public class AuthorServiceImpl implements AuthorService {
             return authorRepository.findAuthorByUsername(currentUserName).orElseThrow(AuthorNotFoundException::new);
         }
 
-        return null;
+        throw new AuthorNotFoundException();
     }
 }
